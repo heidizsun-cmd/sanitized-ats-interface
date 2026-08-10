@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#14201d">
+    <meta name="description" content="A fictional careers interface included in a sanitized ATS portfolio demonstration.">
+    <meta property="og:title" content="Careers at Northstar Labs — Fictional Demo">
+    <meta property="og:description" content="Build the tools people wish already existed.">
+    <title>Careers at Northstar Labs — Fictional Demo</title>
+    <link rel="stylesheet" href="styles.css?v=24">
+  </head>
+  <body data-page="careers">
+    <header class="topbar careers-topbar">
+      <a class="brand" href="careers.html" aria-label="Northstar Labs fictional careers home">
+        <img class="brand-mark" src="assets/signal-mark.svg" alt="">
+        <span>
+          <strong>Northstar Labs</strong>
+          <small>Fictional careers demo</small>
+        </span>
+      </a>
+      <nav class="topnav" aria-label="Primary">
+        <a href="#principles">How we work</a>
+        <a href="#open-roles">Open roles</a>
+        <a class="nav-demo-link" href="index.html">Recruiter demo <span aria-hidden="true">↗</span></a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="careers-hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Your next useful problem</p>
+          <h1>Build the tools people wish already existed.</h1>
+          <p>Join a small team turning messy, everyday work into software that feels clear, fast, and genuinely helpful.</p>
+          <div class="hero-actions">
+            <a class="primary-action hero-link" href="#open-roles">Explore open roles</a>
+            <a class="text-action" href="#principles">Meet the way we work <span aria-hidden="true">↓</span></a>
+          </div>
+          <div class="hero-signals" aria-label="Team highlights">
+            <span>Small by design</span>
+            <span>Remote-friendly</span>
+            <span>High ownership</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="principles" class="careers-section principles-section">
+        <div class="section-intro">
+          <div>
+            <p class="eyebrow">How we work</p>
+            <h2>Useful work, done thoughtfully.</h2>
+          </div>
+          <p>We keep the team close to the people using what we build. That means fewer handoffs, sharper decisions, and room to care about the details.</p>
+        </div>
+        <div class="principles-grid">
+          <article class="principle-card">
+            <span class="principle-number">01</span>
+            <h3>Stay close to the problem</h3>
+            <p>Talk to users, study the edge cases, and understand the work before reaching for a solution.</p>
+          </article>
+          <article class="principle-card featured">
+            <span class="principle-number">02</span>
+            <h3>Ship in tight loops</h3>
+            <p>Put useful ideas in people’s hands early, learn from reality, and improve with purpose.</p>
+          </article>
+          <article class="principle-card">
+            <span class="principle-number">03</span>
+            <h3>Own the outcome</h3>
+            <p>Think beyond your lane. The work is finished when the experience works for the person on the other side.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="open-roles" class="careers-section roles-section">
+        <div class="section-intro compact">
+          <div>
+            <p class="eyebrow">Open roles</p>
+            <h2>Find your place at Northstar Labs.</h2>
+          </div>
+          <p>Two fictional paths, one shared goal: make useful software feel unusually simple.</p>
+        </div>
+        <div id="role-list" class="role-list"></div>
+      </section>
+
+      <dialog id="role-dialog" class="role-dialog" aria-labelledby="role-dialog-title">
+        <button class="dialog-close" type="button" data-close-role-dialog aria-label="Close job description">×</button>
+        <div class="role-dialog-heading">
+          <p class="eyebrow">Open role</p>
+          <h2 id="role-dialog-title"></h2>
+          <div id="role-dialog-meta" class="role-meta"></div>
+        </div>
+        <div id="role-dialog-content" class="role-dialog-content"></div>
+        <a id="role-dialog-apply" class="primary-action role-dialog-apply" href="#application-form">Apply for this role</a>
+      </dialog>
+
+      <section class="process-band">
+        <div class="careers-section process-section">
+          <div class="section-intro inverse">
+            <div>
+              <p class="eyebrow">Sample hiring process</p>
+              <h2>A clear process, from hello to decision.</h2>
+            </div>
+            <p>No mystery rounds or performative puzzles. We use each conversation to understand how you think, collaborate, and make things useful.</p>
+          </div>
+          <ol class="process-list">
+            <li><span>01</span><strong>Start with context</strong><p>A focused conversation about your work, what you want next, and what we are building.</p></li>
+            <li><span>02</span><strong>Work through something real</strong><p>A practical discussion or short exercise shaped around the actual role.</p></li>
+            <li><span>03</span><strong>Meet the team</strong><p>Compare working styles, ask the hard questions, and leave with a clear view of the job.</p></li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="careers-section application-band">
+        <div class="application-copy">
+          <p class="eyebrow">Apply</p>
+          <h2>Tell us what you want to build next.</h2>
+          <p>Share the work you are proud of and the problems you want more of. A résumé helps; a thoughtful note helps even more.</p>
+          <p class="privacy-note">This demo stores submissions only in your current browser. Please use fictional information.</p>
+        </div>
+        <form id="application-form" class="application-form">
+          <div class="form-heading">
+            <span>Application profile</span>
+            <small>All fields marked required</small>
+          </div>
+          <label>Name<input name="name" required placeholder="Your name"></label>
+          <label>Email<input name="email" type="email" required placeholder="you@example.com"></label>
+          <label>Role you are interested in
+            <span class="suggest-field dashboard-role-field">
+              <input name="role" id="application-role" autocomplete="off" placeholder="Start typing a role" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="role-suggestions">
+              <span class="role-field-caret" aria-hidden="true"></span>
+              <span id="role-suggestions" class="suggestions-menu dashboard-role-menu" role="listbox" hidden></span>
+            </span>
+          </label>
+          <div class="form-split">
+            <label>Current role<input name="current_role" placeholder="Senior Product Engineer"></label>
+            <label>Location<input name="location" placeholder="City, state, or remote"></label>
+          </div>
+          <label>LinkedIn or portfolio<input name="portfolio" placeholder="https://"></label>
+          <label>Skills<input name="skills" placeholder="Product, design, React, sales"></label>
+          <label>Résumé or note<textarea name="resume" rows="7" placeholder="Paste résumé text or tell us why this work is interesting to you"></textarea></label>
+          <button class="primary-action wide" type="submit">Submit application</button>
+          <p id="application-status" class="form-status" role="status"></p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="brand footer-brand" href="careers.html">
+        <img class="brand-mark" src="assets/signal-mark.svg" alt="">
+        <span><strong>Northstar Labs</strong><small>Fictional company · sanitized demo</small></span>
+      </a>
+      <p>Fictional roles and applicant data for a working ATS product prototype.</p>
+      <a href="index.html">Open recruiter workspace <span aria-hidden="true">↗</span></a>
+    </footer>
+
+    <script src="app.js?v=24"></script>
+  </body>
+</html>

@@ -1,0 +1,9 @@
+.DS_Store
+dist/
+outputs/
+*.tgz
+__pycache__/
+*.py[cod]
+.env
+*.zip
+node_modules/

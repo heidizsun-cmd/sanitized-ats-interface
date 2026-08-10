@@ -1,0 +1,95 @@
+# Signal ATS - Sanitized Portfolio Interface
+
+Signal ATS is a sanitized portfolio reconstruction of an applicant-tracking interface I built while working with an early-stage startup. It demonstrates how I translate an ambiguous operating bottleneck into a usable workflow and working software.
+
+This public version contains no employer branding, proprietary assets, credentials, production integrations, private repository history, or real applicant data. **Northstar Labs is a fictional company, and every role, candidate, message, email address, and phone number is synthetic.**
+
+![Sanitized Signal ATS recruiter dashboard](docs/screenshots/dashboard.jpg)
+
+## Why I built it
+
+Recruiting work was fragmented across candidate intake, resume review, search, prioritization, communications, and pipeline updates. I designed and implemented a single interface that makes that work visible and actionable.
+
+The original internal workflow was initiated proactively after I recognized that the startup needed an ATS before it was ready to adopt a larger HR platform. It included inbox-based resume intake and was designed with future HR and payroll integration in mind. Those employer-specific integrations are described here at a high level but intentionally excluded from this public reconstruction.
+
+My contribution covered:
+
+- problem definition and workflow design;
+- product decisions about what to automate and what to leave human-controlled;
+- the recruiter and applicant interfaces;
+- deterministic, explainable candidate matching;
+- browser-local demo persistence;
+- local authentication and resume-text extraction;
+- tests, documentation, and privacy boundaries.
+
+## Product walkthrough
+
+The fictional careers interface publishes sample roles and accepts synthetic application information. The recruiter workspace can:
+
+- search and filter a fictional candidate pool;
+- compare candidates with open roles using inspectable evidence;
+- review structured candidate profiles;
+- add notes and log communication activity;
+- move candidates through recruiting stages;
+- parse TXT, Markdown, DOCX, and text-based PDF resumes in local mode;
+- reset the interface to a fully synthetic demo dataset.
+
+![Sanitized fictional careers interface](docs/screenshots/careers.jpg)
+
+## Run locally
+
+The complete demo requires only Python 3:
+
+```sh
+python3 server.py
+```
+
+The terminal prints a local URL and freshly generated credentials. The server binds to `127.0.0.1`, so it is reachable only from the computer running it.
+
+- Fictional careers page: `http://127.0.0.1:4174/careers.html`
+- Recruiter login: `http://127.0.0.1:4174/admin.html`
+
+Optional local credentials can be supplied with:
+
+```sh
+ATS_DEMO_ADMIN_USERNAME="local-recruiter" ATS_DEMO_ADMIN_PASSWORD="use-a-long-local-password" python3 server.py
+```
+
+Run verification with:
+
+```sh
+npm run check
+```
+
+## Architecture
+
+| Layer | Sanitized implementation |
+| --- | --- |
+| Applicant experience | Static fictional careers page and browser-local sample intake |
+| Recruiter experience | Search, filters, matching evidence, profiles, notes, communications, and stages |
+| Matching | Deterministic token and role-keyword scoring; no AI or ML claim |
+| Persistence | Browser `localStorage` seeded only with synthetic candidates |
+| Local service | Python standard-library server with loopback binding, login, session checks, and resume extraction |
+| Frontend | Semantic HTML, responsive CSS, and vanilla JavaScript |
+
+## Privacy and production boundaries
+
+This is a portfolio prototype, not a production ATS. Do not enter real applicant information.
+
+The demo does not provide a shared database, production identity, recruiter roles, encrypted hosted storage, malware scanning, audit logs, or applicant retention and deletion workflows. Those omissions are documented explicitly rather than hidden behind a polished interface.
+
+## Repository guide
+
+- `careers.html` - fictional careers and application experience
+- `admin.html` - local demo login
+- `index.html` - recruiter workspace
+- `app.js` - synthetic data, explainable matching, and interface behavior
+- `server.py` - loopback-only authentication and resume extraction
+- `test_server.py` - credential and parsing regression tests
+- `docs/PRIVACY_AND_COMPLIANCE.md` - production applicant-data checklist
+- `docs/DATA_MODEL.md` - proposed production data model
+- `docs/BUILD_PLAN.md` - implemented scope and future production work
+
+## Sanitization statement
+
+The original private project and its history are not included. This repository was created from a clean history after removing employer names, logos, domains, integration plans, hosting metadata, screenshots, and person-specific test fixtures. All remaining people and company details are fictional examples.

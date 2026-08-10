@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#14201d">
+    <meta name="description" content="A local-first applicant tracking workspace for finding signal and keeping hiring context together.">
+    <meta property="og:title" content="Signal ATS — Sanitized Portfolio Demo">
+    <meta property="og:description" content="See the signal. Keep the context.">
+    <title>Signal ATS — Sanitized Recruiter Workspace</title>
+    <link rel="stylesheet" href="styles.css?v=24">
+  </head>
+  <body data-page="ats">
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="Signal ATS demo home">
+        <img class="brand-mark" src="assets/signal-mark.svg" alt="">
+        <span>
+          <strong>Signal ATS</strong>
+          <small>Sanitized portfolio demo</small>
+        </span>
+      </a>
+      <nav class="topnav" aria-label="Primary">
+        <a href="careers.html">Careers site</a>
+        <a href="index.html" aria-current="page">Dashboard</a>
+      </nav>
+    </header>
+
+    <main class="app-shell">
+      <section class="panel command-panel" aria-label="Candidate search">
+        <div>
+          <p class="eyebrow">Recruiter cockpit</p>
+          <h1>See the signal. Keep the context.</h1>
+        </div>
+        <figure class="command-mark" aria-hidden="true">
+          <img src="assets/signal-mark.svg" alt="">
+        </figure>
+        <div class="search-row">
+          <label class="sr-only" for="candidate-search">Search candidates</label>
+          <input id="candidate-search" type="search" placeholder="Try React, healthcare, or manager">
+          <button class="primary-action" id="search-button" type="button" title="Search candidates">Search</button>
+        </div>
+        <div class="filters" aria-label="Candidate filters">
+          <label>
+            Stage
+            <select id="stage-filter">
+              <option value="all">All stages</option>
+              <option>New</option>
+              <option>Review</option>
+              <option>Shortlist</option>
+              <option>Interview</option>
+              <option>Offer</option>
+              <option>Archived</option>
+            </select>
+          </label>
+          <label>
+            Minimum years
+            <input id="years-filter" type="number" min="0" step="1" value="0">
+          </label>
+          <label>
+            Role match
+            <span class="suggest-field dashboard-role-field">
+              <input id="role-filter" autocomplete="off" placeholder="All roles" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="dashboard-role-suggestions">
+              <input id="role-filter-id" type="hidden" value="all">
+              <span class="role-field-caret" aria-hidden="true"></span>
+              <span id="dashboard-role-suggestions" class="suggestions-menu dashboard-role-menu" role="listbox" hidden></span>
+            </span>
+          </label>
+        </div>
+      </section>
+
+      <section class="metrics-grid" aria-label="ATS summary">
+        <article class="metric-card" tabindex="0" role="button" data-metric="total" aria-expanded="false">
+          <span id="metric-total">0</span>
+          <p>Total candidates</p>
+          <div class="metric-inline" data-metric-inline hidden></div>
+        </article>
+        <article class="metric-card" tabindex="0" role="button" data-metric="Shortlist" aria-expanded="false">
+          <span id="metric-shortlist">0</span>
+          <p>Shortlisted</p>
+          <div class="metric-inline" data-metric-inline hidden></div>
+        </article>
+        <article class="metric-card" tabindex="0" role="button" data-metric="Interview" aria-expanded="false">
+          <span id="metric-interview">0</span>
+          <p>In interview</p>
+          <div class="metric-inline" data-metric-inline hidden></div>
+        </article>
+        <article class="metric-card" tabindex="0" role="button" data-metric="roles" aria-expanded="false">
+          <span id="metric-open-roles">0</span>
+          <p>Open roles</p>
+          <div class="metric-inline" data-metric-inline hidden></div>
+        </article>
+      </section>
+
+      <section class="workspace-grid">
+        <aside class="panel entry-panel" aria-label="Add candidate">
+          <div class="section-heading">
+            <p class="eyebrow">Resume Intake</p>
+            <h2>Add applicant</h2>
+          </div>
+          <form id="candidate-form" class="stacked-form">
+            <label class="file-drop">
+              <span>Choose résumé</span>
+              <small>TXT, MD, or pasted text</small>
+              <input name="file" type="file" accept=".txt,.md,.csv">
+            </label>
+            <label>Resume text preview<textarea name="resume" rows="10" placeholder="Choose a fictional resume file. Signal ATS will scan it and place extracted text here for review."></textarea></label>
+            <p id="resume-parse-status" class="form-status" role="status"></p>
+            <button class="primary-action wide" type="submit">Add to pipeline</button>
+          </form>
+        </aside>
+
+        <section class="panel results-panel" aria-label="Candidate results">
+          <div class="section-heading split">
+            <div>
+              <p class="eyebrow">Pipeline</p>
+              <h2>Candidate results</h2>
+              <p id="pipeline-role-context" class="pipeline-role-context" hidden></p>
+            </div>
+            <button class="ghost-action" id="reset-data" type="button">Reset demo</button>
+          </div>
+          <div id="candidate-list" class="candidate-list"></div>
+        </section>
+
+        <aside class="panel detail-panel" aria-label="Candidate detail">
+          <div class="section-heading">
+            <p class="eyebrow">Profile</p>
+            <div class="profile-title-row">
+              <h2 id="detail-name">Select a candidate</h2>
+              <span id="detail-status" class="stage-pill profile-status" hidden></span>
+            </div>
+          </div>
+          <div id="candidate-detail" class="detail-empty">
+            Search or choose a candidate to view match evidence, notes, and pipeline actions.
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <script src="app.js?v=24"></script>
+  </body>
+</html>
