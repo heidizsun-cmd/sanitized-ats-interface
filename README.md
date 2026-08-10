@@ -34,6 +34,12 @@ The fictional careers interface publishes sample roles and accepts synthetic app
 - parse TXT, Markdown, DOCX, and text-based PDF resumes in local mode;
 - reset the interface to a fully synthetic demo dataset.
 
+### Applicant interaction
+
+Selecting a fictional applicant opens the complete recruiting context: structured profile data, explainable match evidence, notes, communication history, and stage controls.
+
+![Selecting a fictional applicant in Signal ATS](docs/screenshots/applicant-selection.gif)
+
 ![Sanitized fictional careers interface](docs/screenshots/careers.jpg)
 
 ## Run locally
@@ -55,7 +61,13 @@ Optional local credentials can be supplied with:
 ATS_DEMO_ADMIN_USERNAME="local-recruiter" ATS_DEMO_ADMIN_PASSWORD="use-a-long-local-password" python3 server.py
 ```
 
-Run verification with:
+Run the Python verification suite with:
+
+```sh
+python3 -m unittest -v
+```
+
+If Node.js is installed, the combined JavaScript syntax and Python test check is:
 
 ```sh
 npm run check
