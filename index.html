@@ -7,9 +7,6 @@
     <meta name="description" content="A privacy-safe fictional People Operations workflow demonstration.">
     <meta property="og:title" content="Signal ATS — Sanitized Portfolio Demo">
     <meta property="og:description" content="See the signal. Keep the context.">
-    <meta property="og:image" content="__SITE_ORIGIN__/og.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="__SITE_ORIGIN__/og.png">
     <title>Signal ATS — Sanitized People Operations Workspace</title>
     <link rel="stylesheet" href="styles.css?v=27">
   </head>
@@ -25,12 +22,15 @@
       <nav class="topnav" aria-label="Primary">
         <a href="careers.html">Careers site</a>
         <a href="index.html" aria-current="page">Hiring workspace</a>
+        <button class="topnav-button" type="button" id="presentation-mode">Presentation mode</button>
+        <button class="topnav-button" type="button" data-start-tour>Tour</button>
+        <button class="topnav-button" type="button" data-open-limitations>Limitations</button>
       </nav>
     </header>
 
     <aside class="demo-banner" aria-label="Portfolio demonstration notice">
-      <strong>Sanitized portfolio recreation</strong>
-      <span>Northstar Labs and all people, roles, messages, and activity displayed here are fictional.</span>
+      <strong>Sanitized portfolio demo</strong>
+      <span>Public demo · fictional data · stored only in this browser · never use real applicant information.</span>
     </aside>
 
     <main class="app-shell">
@@ -49,7 +49,7 @@
         <div id="ops-dashboard" class="ops-dashboard"></div>
       </section>
 
-      <section class="panel command-panel" aria-label="Candidate search">
+      <section class="panel command-panel" aria-label="Candidate search" data-tour-target="search">
         <div>
           <p class="eyebrow">Hiring operations</p>
           <h1>Keep decisions clear. Keep people moving.</h1>
@@ -78,6 +78,13 @@
           <label>
             Minimum years
             <input id="years-filter" type="number" min="0" step="1" value="0">
+          </label>
+          <label>
+            Background
+            <select id="background-filter">
+              <option value="all">All backgrounds</option>
+              <option value="athlete">Athlete experience</option>
+            </select>
           </label>
           <label>
             Role match
@@ -115,7 +122,8 @@
       </section>
 
       <section class="governance-bar" aria-label="Access and accountability">
-        <div><strong>Viewing as Recruiter</strong><span>Candidate details · communications · stage changes · onboarding handoff</span></div>
+        <label class="founder-switcher">Logged in as<select id="active-founder" aria-label="Active founding team member"></select></label>
+        <div><strong>Founder workspace</strong><span>Notes are attributed to the active founding team member</span></div>
         <div><strong>Role boundaries</strong><span>Interviewers: assigned scorecards · Hiring managers: decision view · Admins: access, retention, exports</span></div>
         <button class="ghost-action" id="show-audit" type="button">View audit trail</button>
       </section>
@@ -129,12 +137,13 @@
           <form id="candidate-form" class="stacked-form">
             <label class="file-drop">
               <span>Choose résumé</span>
-              <small>TXT, MD, or pasted text</small>
-              <input name="file" type="file" accept=".txt,.md,.csv">
+            <small>Browser-local TXT, Markdown, or CSV</small>
+            <input name="file" type="file" accept=".txt,.md,.markdown,.csv,text/plain,text/markdown,text/csv">
             </label>
             <label>Resume text preview<textarea name="resume" rows="10" placeholder="Choose a fictional resume file. Signal ATS will scan it and place extracted text here for review."></textarea></label>
             <p id="resume-parse-status" class="form-status" role="status"></p>
-            <button class="primary-action wide" type="submit">Add to pipeline</button>
+            <p class="privacy-note">Files are read only in this browser, are never transmitted, and are not retained as files. Use fictional content only.</p>
+            <button class="primary-action wide" type="submit">Add fictional candidate</button>
           </form>
         </aside>
 
@@ -145,7 +154,7 @@
               <h2>Candidate results</h2>
               <p id="pipeline-role-context" class="pipeline-role-context" hidden></p>
             </div>
-            <button class="ghost-action" id="reset-data" type="button">Reset demo</button>
+            <button class="ghost-action" id="reset-data" type="button" data-tour-target="reset">Reset demo</button>
           </div>
           <div id="candidate-list" class="candidate-list"></div>
         </section>
@@ -166,6 +175,8 @@
     </main>
 
     <dialog id="audit-dialog" class="audit-dialog"><div class="dialog-heading"><div><p class="eyebrow">Accountability</p><h2>Synthetic audit trail</h2></div><button class="dialog-close" type="button" data-close-audit aria-label="Close">×</button></div><p class="section-copy">A browser-local demonstration of events a production system would record in append-only storage.</p><div id="audit-list"></div></dialog>
-    <script src="app.js?v=27"></script>
+    <dialog id="limitations-dialog" class="audit-dialog"><div class="dialog-heading"><div><p class="eyebrow">Product boundaries</p><h2>Demo limitations</h2></div><button class="dialog-close" type="button" data-close-limitations aria-label="Close">×</button></div><div data-limitations-content></div></dialog>
+    <dialog id="tour-dialog" class="tour-dialog"><p class="eyebrow">Guided demo <span id="tour-progress"></span></p><h2 id="tour-title"></h2><p id="tour-copy"></p><div class="detail-actions"><button class="ghost-action" type="button" data-tour-skip>Skip tour</button><button class="ghost-action" type="button" data-tour-prev>Back</button><button class="primary-action" type="button" data-tour-next>Next</button></div></dialog>
+    <script type="module" src="app.js?v=30"></script>
   </body>
 </html>

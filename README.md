@@ -1,114 +1,108 @@
-# Signal ATS - Sanitized Portfolio Interface
+# Signal ATS — Sanitized Portfolio Demo
 
-Signal ATS is a sanitized portfolio reconstruction of an applicant-tracking interface I built while working with an early-stage startup. It demonstrates how I translate an ambiguous operating bottleneck into a usable workflow and working software.
+Signal ATS is a public, static portfolio demonstration of fictional applicant and recruiter workflows for Northstar Labs, a fictional company. It is designed for a three-to-five-minute live walkthrough and runs entirely in the visitor's browser.
 
-This public version contains no employer branding, proprietary assets, credentials, production integrations, private repository history, or real applicant data. **Northstar Labs is a fictional company, and every role, candidate, message, email address, and phone number is synthetic.**
+Every included person, role, company, message, email address, phone number, and activity is synthetic. Do not enter real applicant or résumé information.
 
-![Sanitized Signal ATS recruiter dashboard](docs/screenshots/dashboard.jpg)
+## Live demo purpose
 
-## Why I built it
-
-Recruiting work was fragmented across candidate intake, resume review, search, prioritization, communications, and pipeline updates. I designed and implemented a single interface that makes that work visible and actionable.
-
-The original internal workflow was initiated proactively after I recognized that the startup needed an ATS before it was ready to adopt a larger HR platform. It included inbox-based resume intake and was designed with future HR and payroll integration in mind. Those employer-specific integrations are described here at a high level but intentionally excluded from this public reconstruction.
-
-My contribution covered:
-
-- problem definition and workflow design;
-- product decisions about what to automate and what to leave human-controlled;
-- the recruiter and applicant interfaces;
-- deterministic, explainable candidate matching;
-- browser-local demo persistence;
-- local authentication and resume-text extraction;
-- tests, documentation, and privacy boundaries.
-
-## Product walkthrough
-
-The fictional careers interface publishes sample roles and accepts synthetic application information. The recruiter workspace can:
-
-- search and filter a fictional candidate pool;
-- compare candidates with open roles using inspectable evidence without presenting a universal candidate score;
-- review structured candidate profiles;
-- assign an owner, next action, due date, and supportive response target;
-- configure role competencies and collect independent, evidence-based scorecards;
-- create editable communication drafts and record draft or approved status without sending email;
-- review deterministic, evidence-linked recruiter assistance that cannot make hiring decisions;
-- document a human decision and create a minimum-necessary onboarding handoff;
-- inspect synthetic operational analytics and browser-local audit events;
-- demonstrate retention, export-request, deletion-request, and role-permission concepts;
-- add notes and log communication activity;
-- move candidates through recruiting stages;
-- parse TXT, Markdown, DOCX, and text-based PDF resumes in local mode;
-- reset the interface to a fully synthetic demo dataset.
-
-### Applicant interaction
-
-Selecting a fictional applicant opens the complete recruiting context: structured profile data, explainable match evidence, notes, communication history, and stage controls.
-
-![Selecting a fictional applicant in Signal ATS](docs/screenshots/applicant-selection.gif)
-
-![Sanitized fictional careers interface](docs/screenshots/careers.jpg)
+The demo shows how a clear applicant experience connects to recruiter search, explainable role matching, profile context, notes, communication history, and pipeline movement. It is a product demonstration—not a production ATS and not secure authentication.
 
 ## Run locally
 
-The complete demo requires only Python 3:
+Requirements: Node.js 20 or newer.
 
 ```sh
-python3 server.py
+npx serve . -l 4174
 ```
 
-The terminal prints a local URL and freshly generated credentials. The server binds to `127.0.0.1`, so it is reachable only from the computer running it.
+Then open:
 
-- Fictional careers page: `http://127.0.0.1:4174/careers.html`
-- Recruiter login: `http://127.0.0.1:4174/admin.html`
+- Careers: `http://localhost:4174/careers.html`
+- Recruiter entry: `http://localhost:4174/admin.html`
+- Recruiter workspace: `http://localhost:4174/index.html`
 
-Optional local credentials can be supplied with:
-
-```sh
-ATS_DEMO_ADMIN_USERNAME="local-recruiter" ATS_DEMO_ADMIN_PASSWORD="use-a-long-local-password" python3 server.py
-```
-
-Run the Python verification suite with:
+Run verification:
 
 ```sh
-python3 -m unittest -v
-```
-
-If Node.js is installed, the combined JavaScript syntax and Python test check is:
-
-```sh
+npm test
 npm run check
 ```
 
+No install step, environment file, API key, database, account, or server-side application is required.
+
+## Deploy to Vercel
+
+Import the repository as a new Vercel project and use these exact settings:
+
+| Setting | Value |
+| --- | --- |
+| Framework Preset | Other |
+| Root Directory | `.` |
+| Build Command | Leave empty |
+| Output Directory | Leave empty |
+| Install Command | Leave empty |
+| Node.js Version | 20.x or newer (tests only; runtime is static) |
+| Environment Variables | None |
+
+`vercel.json` supplies clean routes for `/`, `/careers`, `/admin`, and `/dashboard`, plus conservative browser headers. Vercel serves the HTML, CSS, JavaScript, and SVG files directly on the Hobby plan.
+
 ## Architecture
 
-| Layer | Sanitized implementation |
+| Layer | Implementation |
 | --- | --- |
-| Applicant experience | Static fictional careers page and browser-local sample intake |
-| Recruiter experience | Ownership, response targets, evidence review, scorecards, communications, human decisions, onboarding, and synthetic analytics |
-| Assistance | Deterministic evidence extraction with editable output; no connected model or automated decisions |
-| Persistence | Browser `localStorage` seeded only with synthetic candidates |
-| Local service | Python standard-library server with loopback binding, login, session checks, and resume extraction |
-| Frontend | Semantic HTML, responsive CSS, and vanilla JavaScript |
+| Pages | Static semantic HTML for careers, recruiter entry, and workspace |
+| Interface | Responsive CSS and dependency-free vanilla JavaScript |
+| State | Versioned browser `localStorage`, seeded from synthetic records |
+| Résumé demo | Pasted text or browser-side TXT, Markdown, and CSV reading |
+| Matching | Deterministic role-signal coverage plus a visible experience component |
+| Hosting | Static Vercel deployment; no functions or server runtime |
+| Tests | Node's built-in test runner for matching and validation logic |
 
-## Privacy and production boundaries
+No file is uploaded. The browser reads supported text files locally and stores only the resulting candidate text in that browser. DOCX, PDF, images, and other formats are intentionally unsupported because reliable extraction was not added without introducing a larger client dependency; visitors receive a paste-text fallback.
 
-This is a portfolio prototype, not a production ATS. Do not enter real applicant information.
+## Feature walkthrough
 
-The interface demonstrates role boundaries, audit events, retention state, export requests, and deletion requests in browser-local storage. It does not provide production enforcement, a shared database, managed identity, encrypted hosted storage, malware scanning, immutable audit logs, verified data-subject workflows, or real email delivery. Those boundaries are documented explicitly rather than hidden behind a polished interface.
+1. Open Careers, review a complete fictional job description, and select **Load sample application**.
+2. Submit it and open the recruiter workspace; the new applicant appears immediately from shared browser-local storage.
+3. Search and filter candidates by text, stage, experience, or role.
+4. Open a profile to inspect matched skills, missing role signals, relevant experience, and the exact percentage calculation.
+5. Edit candidate context, add notes, log inbound/outbound/interview/internal events, and move the stage.
+6. Archive or remove a browser-local candidate, or reset the original synthetic dataset.
+
+The optional guided tour covers the primary path and can be skipped or restarted. Metric cards are keyboard-operable and open live drilldowns.
+
+## Presentation mode
+
+Choose **Presentation mode** in the recruiter workspace. It restores a predictable synthetic starting state, selects the CFO scenario and strongest candidate, and hides secondary explanatory sections while retaining the privacy banner. A suggested live flow is: matching evidence → profile notes/history → stage movement → reset.
+
+## Matching method
+
+Matching is deterministic and explainable, not AI. For the selected or assigned role:
+
+- role-signal coverage contributes up to 80 points;
+- recorded experience contributes up to 20 points, at two points per year;
+- matched and missing signals and the arithmetic are displayed;
+- editing candidate information or changing the selected role recalculates the score immediately.
+
+The percentage is an inspectable demo comparison, not a prediction, hiring recommendation, measure of candidate quality, or claim of fairness.
+
+## Privacy and production limitations
+
+All data remains in the current browser. There are no trackers, analytics, API calls, email or Drive integrations, credentials, or external storage.
+
+This demo lacks production authentication, shared storage, malware scanning, immutable audit logs, retention/deletion enforcement, verified data-subject workflows, role-based access, and legal/compliance approval. Browser-local audit and deletion controls illustrate product concepts; they do not enforce them. The demo must not be used with real applicant data and is not production-ready.
 
 ## Repository guide
 
-- `careers.html` - fictional careers and application experience
-- `admin.html` - local demo login
-- `index.html` - recruiter workspace
-- `app.js` - synthetic data, explainable matching, and interface behavior
-- `server.py` - loopback-only authentication and resume extraction
-- `test_server.py` - credential and parsing regression tests
-- `docs/PRIVACY_AND_COMPLIANCE.md` - production applicant-data checklist
-- `docs/DATA_MODEL.md` - proposed production data model
-- `docs/BUILD_PLAN.md` - implemented scope and future production work
+- `careers.html` — fictional roles and application intake
+- `admin.html` — public recruiter-demo entry and boundary notice
+- `index.html` — recruiter workspace
+- `app.js` — browser state and interface behavior
+- `demo-logic.js` — deterministic matching and validation logic
+- `styles.css` — responsive visual system
+- `tests/` — automated logic tests
+- `vercel.json` — static routes and response headers
+- `docs/PRIVACY_AND_COMPLIANCE.md` — production boundary checklist
 
-## Sanitization statement
-
-The original private project and its history are not included. This repository was created from a clean history after removing employer names, logos, domains, integration plans, hosting metadata, screenshots, and person-specific test fixtures. All remaining people and company details are fictional examples.
+The previous Python login and résumé service, environment prompts, and server tests were removed because they created broken Vercel-only paths and are outside this public static demo's architecture.

@@ -23,9 +23,11 @@
         <a href="#principles">How we work</a>
         <a href="#open-roles">Open roles</a>
         <a class="nav-demo-link" href="index.html">Recruiter demo <span aria-hidden="true">↗</span></a>
+        <button class="topnav-button" type="button" data-open-limitations>Limitations</button>
       </nav>
     </header>
 
+    <aside class="demo-banner" aria-label="Portfolio demonstration notice"><strong>Sanitized portfolio demo</strong><span>Public demo · fictional data · stored only in this browser · never use real applicant information.</span></aside>
     <main>
       <section class="careers-hero">
         <div class="hero-copy">
@@ -126,7 +128,7 @@
           <label>Email<input name="email" type="email" required placeholder="you@example.com"></label>
           <label>Role you are interested in
             <span class="suggest-field dashboard-role-field">
-              <input name="role" id="application-role" autocomplete="off" placeholder="Start typing a role" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="role-suggestions">
+              <input name="role" id="application-role" autocomplete="off" placeholder="Start typing a role" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="role-suggestions" required>
               <span class="role-field-caret" aria-hidden="true"></span>
               <span id="role-suggestions" class="suggestions-menu dashboard-role-menu" role="listbox" hidden></span>
             </span>
@@ -137,7 +139,10 @@
           </div>
           <label>LinkedIn or portfolio<input name="portfolio" placeholder="https://"></label>
           <label>Skills<input name="skills" placeholder="Product, design, React, sales"></label>
-          <label>Résumé or note<textarea name="resume" rows="7" placeholder="Paste résumé text or tell us why this work is interesting to you"></textarea></label>
+          <label>Résumé or note<textarea name="resume" rows="7" placeholder="Paste fictional résumé text or tell us why this work is interesting to you"></textarea></label>
+          <label class="file-drop"><span>Load résumé text from a file</span><small>Browser-local TXT, Markdown, or CSV only</small><input name="application_file" type="file" accept=".txt,.md,.markdown,.csv,text/plain,text/markdown,text/csv"></label>
+          <p id="application-file-status" class="form-status" role="status"></p>
+          <button class="ghost-action wide" id="load-sample-application" type="button">Load sample application</button>
           <button class="primary-action wide" type="submit">Submit application</button>
           <p id="application-status" class="form-status" role="status"></p>
         </form>
@@ -153,6 +158,7 @@
       <a href="index.html">Open recruiter workspace <span aria-hidden="true">↗</span></a>
     </footer>
 
-    <script src="app.js?v=24"></script>
+    <dialog id="limitations-dialog" class="audit-dialog"><div class="dialog-heading"><div><p class="eyebrow">Product boundaries</p><h2>Demo limitations</h2></div><button class="dialog-close" type="button" data-close-limitations aria-label="Close">×</button></div><div data-limitations-content></div></dialog>
+    <script type="module" src="app.js?v=30"></script>
   </body>
 </html>

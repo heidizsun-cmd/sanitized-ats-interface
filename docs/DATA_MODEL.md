@@ -40,7 +40,7 @@
   "retention_status": "Retain until policy date",
   "notes": [],
   "tags": [],
-  "resume_drive_file_id": "google_drive_file_id",
+  "source_file_name": "fictional-resume.txt",
   "resume_text": "Full extracted resume text",
   "parser_confidence": 0.91,
   "created_at": "2026-07-23T00:00:00Z",

@@ -9,9 +9,9 @@ This product handles applicant personal data. Design and operate it carefully.
 - Log candidate views, edits, exports, searches, and stage changes.
 - Do not infer protected characteristics.
 - Do not use protected-class information in matching or ranking.
-- Make AI-generated match explanations evidence-based.
+- Keep deterministic match explanations evidence-based and inspectable.
 - Support candidate deletion and export.
-- Keep AI recommendations separate from final hiring decisions.
+- Keep all match comparisons separate from final hiring decisions.
 
 ## Data To Avoid
 

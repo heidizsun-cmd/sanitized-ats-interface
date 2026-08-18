@@ -7,29 +7,28 @@
     <link rel="stylesheet" href="styles.css?v=23">
   </head>
   <body data-page="admin-login">
+    <aside class="demo-banner" aria-label="Portfolio demonstration notice"><strong>Sanitized portfolio demo</strong><span>Public demo · fictional data · stored only in this browser · never use real applicant information.</span></aside>
     <main class="login-shell">
-      <section class="login-panel panel" aria-label="Admin login">
+      <section class="login-panel panel" aria-label="Enter recruiter demo">
         <a class="brand login-brand" href="careers.html" aria-label="Signal ATS demo home">
           <img class="brand-mark" src="assets/signal-mark.svg" alt="">
           <span>
             <strong>Signal ATS</strong>
-            <small>Sanitized local demo</small>
+            <small>Sanitized portfolio demo</small>
           </span>
         </a>
         <div>
-          <p class="eyebrow">Private Dashboard</p>
-          <h1>Admin login</h1>
-          <p class="login-copy">Sign in to open the recruiting dashboard.</p>
+          <p class="eyebrow">Public portfolio experience</p>
+          <h1>Recruiter demo</h1>
+          <p class="login-copy">Explore a browser-local workspace using fictional people and roles. This is not secure production authentication.</p>
         </div>
-        <form id="admin-login-form" class="stacked-form">
-          <label>Username<input name="username" autocomplete="username" required></label>
-          <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
-          <button class="primary-action wide" type="submit">Open dashboard</button>
-          <p id="admin-login-status" class="form-status" role="status"></p>
-        </form>
+        <div class="privacy-note"><strong>Use fictional information only.</strong> Changes stay in this browser and can be reset at any time.</div>
+        <a class="primary-action wide centered-action" href="index.html">Enter recruiter demo</a>
+        <button class="ghost-action wide" type="button" data-open-limitations>Demo limitations</button>
       </section>
     </main>
 
-    <script src="app.js?v=24"></script>
+    <dialog id="limitations-dialog" class="audit-dialog"><div class="dialog-heading"><div><p class="eyebrow">Product boundaries</p><h2>Demo limitations</h2></div><button class="dialog-close" type="button" data-close-limitations aria-label="Close">×</button></div><div data-limitations-content></div></dialog>
+    <script type="module" src="app.js?v=30"></script>
   </body>
 </html>
