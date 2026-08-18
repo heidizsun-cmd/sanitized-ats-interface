@@ -1,4 +1,5 @@
-const STORAGE_KEY = "signal-ats-sanitized-demo-v1";
+const STORAGE_KEY = "signal-ats-sanitized-demo-v3";
+const RESPONSE_TARGET_DAYS = 3;
 const roles = [
   {
     id: "chief-financial-officer",
@@ -6,8 +7,8 @@ const roles = [
     team: "Finance & Operations",
     location: "United States · Remote-friendly",
     type: "Full-time",
-    summary: "Own Northstar Labs’ financial strategy and build the operating discipline that helps a small, ambitious company scale with clarity.",
-    overview: "Northstar Labs is looking for a hands-on CFO who can move comfortably between long-range strategy and the details of running a rigorous finance function. You will be a close partner to the CEO and leadership team, turning business signals into better decisions while building the systems, controls, and planning cadence the company needs for its next stage.",
+    summary: "Own Northstar Labs’ financial strategy and build the operating discipline that helps a small, ambitious fictional company scale with clarity.",
+    overview: "Northstar Labs is looking for a hands-on CFO who can move comfortably between long-range strategy and the details of running a rigorous finance function. You will be a close partner to the fictional leadership team, turning business signals into better decisions while building durable systems and controls.",
     responsibilities: [
       "Own the company financial plan, forecasting model, budgeting process, and operating reviews.",
       "Advise the CEO and leadership team on capital allocation, growth tradeoffs, fundraising, and risk.",
@@ -34,8 +35,8 @@ const roles = [
     team: "Engineering",
     location: "San Francisco · Hybrid",
     type: "Internship · Cohort",
-    summary: "Join a small engineering cohort and ship real product work across Northstar Labs’ frontend, services, and data layer with close mentorship.",
-    overview: "The MTS Stack Engineer Intern Cohort is designed for early-career builders who learn fastest by working on real products with experienced engineers. You will join a small cohort, own a scoped customer problem, and contribute production-quality work across the stack while learning how Northstar Labs turns ambiguity into useful software.",
+    summary: "Join a small engineering cohort and ship fictional product work across Northstar Labs’ frontend, services, and data layer with close mentorship.",
+    overview: "The MTS Stack Engineer Intern Cohort is a fictional role for early-career builders who learn through scoped projects with experienced engineers. The scenario demonstrates how Northstar Labs turns ambiguity into useful software.",
     responsibilities: [
       "Build and ship a scoped product feature across the browser, application services, and data layer.",
       "Pair with engineers on technical design, implementation, testing, and thoughtful code review.",
@@ -55,6 +56,11 @@ const roles = [
       "Interest in product engineering and making complex workflows feel simple."
     ],
     keywords: ["javascript", "typescript", "react", "python", "api", "sql", "full stack", "computer science", "intern"]
+    ,competencies: [
+      { id: "problem-solving", name: "Structured problem solving", question: "Walk through a technical problem you scoped and solved." },
+      { id: "collaboration", name: "Collaborative learning", question: "Tell us about a time feedback changed your approach." },
+      { id: "execution", name: "End-to-end execution", question: "Show us something you finished and explain the tradeoffs." }
+    ]
   }
 ];
 
@@ -96,6 +102,13 @@ const demoCandidates = [
     skills: ["Financial planning", "Accounting", "Fundraising", "B2B SaaS", "Team management"],
     industries: ["SaaS", "Fintech"],
     stage: "Shortlist",
+    role_id: "chief-financial-officer",
+    owner: "Jordan Lee",
+    next_action: "Confirm board-partner interview panel",
+    due_date: "2026-08-19",
+    stage_entered_at: "2026-08-15T16:00:00Z",
+    source: "Referral",
+    exit_reason: "",
     notes: ["Strong CFO profile with a pragmatic operating style and board experience."],
     communications: [
       {
@@ -130,6 +143,28 @@ const demoCandidates = [
     skills: ["TypeScript", "React", "Python", "SQL", "API integration"],
     industries: ["Developer tools", "Education"],
     stage: "Interview",
+    role_id: "mts-stack-engineer-intern-cohort",
+    owner: "Sam Patel",
+    next_action: "Review completed scorecards",
+    due_date: "2026-08-18",
+    stage_entered_at: "2026-08-13T17:00:00Z",
+    source: "Careers site",
+    exit_reason: "",
+    retention_status: "Retain until Feb 17, 2027",
+    scorecards: [
+      { interviewer: "Avery Kim", submitted: true, recommendation: "advance", responses: [
+        { competency: "Structured problem solving", rating: 4, evidence: "Explained API retry tradeoffs and connected the choice to observed failure modes." },
+        { competency: "Collaborative learning", rating: 4, evidence: "Described revising a data model after peer review and what improved." },
+        { competency: "End-to-end execution", rating: 3, evidence: "Shipped a course-planning app with tests; monitoring depth remains an interview follow-up." }
+      ]},
+      { interviewer: "Noah Williams", submitted: false, recommendation: "hold", responses: [] }
+    ],
+    decision: { status: "Pending", owner: "Morgan Davis", rationale: "Waiting for the second independent scorecard." },
+    assistant: {
+      summary: "Marcus describes two completed full-stack projects using TypeScript, React, Python, SQL, APIs, testing, and Git.",
+      evidence: ["Résumé: “two full-stack projects”", "Résumé lists TypeScript, React, Python, SQL, REST APIs, testing, and Git"],
+      questions: ["What tradeoff did you make while shipping one project?", "How did testing change the way you designed an API?"]
+    },
     notes: ["Built and shipped two full-stack projects; strong fit for a mentored cohort."],
     communications: [
       {
@@ -155,15 +190,43 @@ const demoCandidates = [
     skills: ["Growth", "Experimentation", "SQL", "Lifecycle", "Content"],
     industries: ["SaaS", "Healthcare"],
     stage: "Review",
+    role_id: "mts-stack-engineer-intern-cohort",
+    owner: "Sam Patel",
+    next_action: "Send application status update",
+    due_date: "2026-08-14",
+    stage_entered_at: "2026-08-10T17:00:00Z",
+    source: "University event",
+    exit_reason: "",
     notes: ["Good analytics background for growth role."],
     communications: [],
     resume_text: "Growth Marketing Lead with 6 years of experimentation, SQL, lifecycle programs, B2B SaaS, healthcare, and content strategy experience."
+  },
+  {
+    candidate_id: "cand_104", name: "Talia Okafor", email: "talia.okafor@example.com", phone: "+1-555-0166", location: "Oakland, CA",
+    current_title: "Software Engineering Student", total_years_experience: 2, skills: ["JavaScript", "React", "SQL", "API integration"], industries: ["Education"],
+    stage: "Offer", role_id: "mts-stack-engineer-intern-cohort", owner: "Sam Patel", next_action: "Confirm onboarding handoff", due_date: "2026-08-18", stage_entered_at: "2026-08-16T17:00:00Z", source: "Employee referral", exit_reason: "", retention_status: "Retain until Feb 17, 2027",
+    notes: ["Offer accepted in this fictional scenario. Human decision documented after completed scorecards."], communications: [{ event_id: "evt_401", type: "email", direction: "outbound", status: "sent (simulated)", subject: "Welcome to the intern cohort", body_preview: "Offer-stage message reviewed and marked sent for this browser-only demo.", owner: "Sam Patel", event_at: "2026-08-16T18:00:00Z" }],
+    scorecards: [
+      { interviewer: "Avery Kim", submitted: true, recommendation: "advance", responses: [{ competency: "Structured problem solving", rating: 4, evidence: "Used a clear hypothesis-and-test approach in the project walkthrough." }] },
+      { interviewer: "Noah Williams", submitted: true, recommendation: "advance", responses: [{ competency: "Collaborative learning", rating: 4, evidence: "Gave a specific example of incorporating code review feedback." }] }
+    ],
+    decision: { status: "Advance", owner: "Morgan Davis", rationale: "Both interviewers documented job-related evidence; hiring manager approved the offer." },
+    onboarding: { owner: "Jamie Torres", start_date: "2026-09-08", equipment: "Laptop and security key", documents: "Intern agreement and payroll forms", tasks: ["Send welcome guide", "Schedule orientation", "Assign engineering buddy", "Plan first-week project kickoff"] },
+    assistant: { summary: "Talia presents project evidence in JavaScript, React, SQL, and API integration.", evidence: ["Résumé lists JavaScript, React, SQL, and API integration"], questions: ["How did you validate the API behavior?"] },
+    resume_text: "Software engineering student who completed projects using JavaScript, React, SQL, and API integration.", created_at: "2026-08-08T17:00:00Z", updated_at: "2026-08-16T18:00:00Z"
   }
 ];
 
 let selectedCandidateId = null;
 let activeMetric = null;
 let pendingStageMove = null;
+const AUDIT_KEY = "signal-ats-sanitized-audit-v1";
+
+function logAudit(action, candidate, detail) {
+  const events = JSON.parse(localStorage.getItem(AUDIT_KEY) || "[]");
+  events.unshift({ action, candidate: candidate?.name || "Workspace", detail, actor: "Demo recruiter", at: new Date().toISOString() });
+  localStorage.setItem(AUDIT_KEY, JSON.stringify(events.slice(0, 40)));
+}
 
 function getCandidates() {
   const stored = localStorage.getItem(STORAGE_KEY);
@@ -633,9 +696,10 @@ function renderCandidates() {
           <h3>${escapeHtml(candidate.name)}</h3>
           <p>${escapeHtml(candidate.current_title || "No title")} | ${escapeHtml(candidate.location || "No location")}</p>
         </span>
-        <span class="score">${Math.round(candidate.match_score * 100)}%</span>
+        <span class="evidence-count">${roleKeywordHits(candidate, document.querySelector("#role-filter-id")?.value || "all").length || (candidate.skills || []).length} evidence signals</span>
       </span>
       <span class="stage-pill">${escapeHtml(candidate.stage || "New")}</span>
+      <span class="ownership-line"><strong>${escapeHtml(candidate.owner || "Unassigned")}</strong> · ${escapeHtml(candidate.next_action || "Set next action")} · ${escapeHtml(candidate.due_date || "No due date")}</span>
       ${renderCandidateRoleEvidence(candidate)}
       <span class="chips">${(candidate.skills || []).slice(0, 5).map((skill) => `<span class="chip">${escapeHtml(skill)}</span>`).join("")}</span>
     </button>
@@ -652,8 +716,8 @@ function renderDetail(candidateId) {
   const candidate = getCandidates().find((item) => item.candidate_id === candidateId);
   if (!candidate) return;
   if (selectedCandidateId && selectedCandidateId !== candidateId) pendingStageMove = null;
-  const score = scoreCandidate(candidate, query, roleId);
   const reasons = matchReasons(candidate, query, roleId);
+  const role = roles.find((item) => item.id === candidate.role_id) || roles.find((item) => item.id === roleId);
   selectedCandidateId = candidateId;
   name.textContent = candidate.name;
   if (status) {
@@ -668,12 +732,21 @@ function renderDetail(candidateId) {
       <dt>Location</dt><dd>${escapeHtml(candidate.location || "Not listed")}</dd>
       <dt>Experience</dt><dd>${Number(candidate.total_years_experience || 0)} years</dd>
       <dt>Skills</dt><dd>${escapeHtml((candidate.skills || []).join(", ") || "Not listed")}</dd>
-      <dt>Match</dt><dd>${Math.round(score * 100)}%</dd>
+      <dt>Owner</dt><dd>${escapeHtml(candidate.owner || "Unassigned")}</dd>
+      <dt>Next action</dt><dd>${escapeHtml(candidate.next_action || "Not set")}</dd>
+      <dt>Due</dt><dd>${escapeHtml(candidate.due_date || "Not set")}</dd>
+      <dt>Retention</dt><dd>${escapeHtml(candidate.retention_status || "Policy not assigned")}</dd>
     </dl>
     <div>
       <h3>Match evidence</h3>
+      <p class="section-copy">Job-related signals only. This is evidence for human review, not a candidate score.</p>
       <ul class="notes-list">${reasons.map((reason) => `<li>${escapeHtml(reason)}</li>`).join("") || "<li>No evidence yet. Add resume text or search terms.</li>"}</ul>
     </div>
+    ${renderAssistant(candidate)}
+    ${renderScorecards(candidate, role)}
+    ${renderDecision(candidate)}
+    ${renderCommunicationComposer(candidate, role)}
+    ${renderOnboarding(candidate)}
     <div>
       <h3>Notes</h3>
       <ul class="notes-list">${(candidate.notes || []).map((note) => `<li>${escapeHtml(note)}</li>`).join("") || "<li>No notes yet.</li>"}</ul>
@@ -698,8 +771,70 @@ function renderDetail(candidateId) {
       </div>
       ${pendingStageMove?.candidateId === candidate.candidate_id ? `<p class="stage-confirmation">Click Confirm ${escapeHtml(pendingStageMove.stage)} to move this candidate.</p>` : ""}
     </div>
+    <div class="privacy-controls"><h3>Candidate data controls</h3><p class="section-copy">Prototype actions create a visible browser-local audit event. Production would require verified identity, authorization, and durable workflows.</p><div class="detail-actions"><button class="ghost-action" data-action="export">Export candidate</button><button class="ghost-action danger" data-action="delete-request">Request deletion</button></div></div>
   `;
   renderCandidates();
+}
+
+function daysInStage(candidate) {
+  const started = new Date(candidate.stage_entered_at || candidate.updated_at || candidate.created_at || Date.now());
+  return Math.max(0, Math.floor((Date.now() - started.getTime()) / 86400000));
+}
+
+function isOverdue(candidate) {
+  return candidate.due_date && new Date(`${candidate.due_date}T23:59:59`) < new Date();
+}
+
+function renderOperationsDashboard() {
+  const root = document.querySelector("#ops-dashboard");
+  if (!root) return;
+  const candidates = getCandidates();
+  const overdue = candidates.filter(isOverdue);
+  const stageCounts = ["New", "Review", "Shortlist", "Interview", "Offer"].map((stage) => `${stage} ${candidates.filter((item) => item.stage === stage).length}`).join(" · ");
+  const completed = candidates.flatMap((item) => item.scorecards || []).filter((item) => item.submitted).length;
+  const assigned = candidates.flatMap((item) => item.scorecards || []).length;
+  const sources = [...new Set(candidates.map((item) => item.source).filter(Boolean))].map((source) => `${source} ${candidates.filter((item) => item.source === source).length}`).join(" · ");
+  const offers = candidates.filter((item) => item.stage === "Offer");
+  root.innerHTML = `
+    <article class="attention-queue"><strong>${overdue.length} follow-up${overdue.length === 1 ? "" : "s"} need attention</strong><span>${overdue.map((item) => `${escapeHtml(item.name)} — ${daysInStage(item)} days in ${escapeHtml(item.stage)}`).join("<br>") || "Nothing overdue today."}</span></article>
+    <dl class="analytics-list">
+      <div><dt>Candidates by stage</dt><dd>${stageCounts}</dd></div>
+      <div><dt>Interview completion</dt><dd>${completed} of ${assigned} assigned scorecards submitted</dd></div>
+      <div><dt>Response-time compliance</dt><dd>${candidates.length - overdue.length} of ${candidates.length} within the ${RESPONSE_TARGET_DAYS}-day demo target</dd></div>
+      <div><dt>Source distribution</dt><dd>${sources || "No source data"}</dd></div>
+      <div><dt>Offer acceptance</dt><dd>${offers.filter((item) => item.onboarding).length} accepted of ${offers.length} offer-stage candidates</dd></div>
+      <div><dt>Exit reasons</dt><dd>${candidates.filter((item) => item.exit_reason).map((item) => item.exit_reason).join(" · ") || "No exits in the current scenario"}</dd></div>
+    </dl>`;
+}
+
+function renderAssistant(candidate) {
+  const assistant = candidate.assistant || { summary: `Résumé lists ${(candidate.skills || []).join(", ") || "no structured skills yet"}.`, evidence: (candidate.skills || []).map((skill) => `Résumé contains ${skill}`), questions: ["What job-related example best demonstrates this skill?"] };
+  return `<section class="workflow-section assistant-panel"><div class="section-heading split"><div><p class="eyebrow">Recruiter assistant</p><h3>Editable, evidence-linked assistance</h3></div><span class="assist-label">Assistance—not objective truth</span></div><label>Résumé summary<textarea id="assistant-summary" rows="3">${escapeHtml(assistant.summary)}</textarea></label><strong>Supporting evidence</strong><ul class="notes-list">${assistant.evidence.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul><strong>Suggested questions</strong><ul class="notes-list">${assistant.questions.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul><p class="guardrail-copy">Does not infer protected traits, personality, “culture fit,” or potential. Cannot move a candidate or make a decision.</p><button class="ghost-action" data-action="save-assistance">Save edited summary</button></section>`;
+}
+
+function renderScorecards(candidate, role) {
+  const cards = candidate.scorecards || [];
+  const competencies = candidate.role_competencies || role?.competencies || [];
+  const submitted = cards.filter((card) => card.submitted);
+  const locked = cards.some((card) => !card.submitted);
+  return `<section class="workflow-section"><div class="section-heading"><p class="eyebrow">Structured interviews</p><h3>${escapeHtml(role?.title || "Role")} scorecards</h3></div><div class="competency-list">${competencies.map((item) => `<div><strong>${escapeHtml(item.name)}</strong><span>${escapeHtml(item.question)}</span></div>`).join("") || "<p>No competencies configured.</p>"}</div><details><summary>Add a role competency and question</summary><div class="scorecard-form"><label>Competency<input id="new-competency" placeholder="e.g. Debugging approach"></label><label>Interview question<input id="new-question" placeholder="Ask for a specific example"></label><button class="ghost-action" data-action="add-competency">Add competency</button></div></details><p class="independence-note">${locked ? "Independent feedback is locked: interviewers cannot see colleagues’ responses until they submit their own." : "All assigned feedback is submitted; the hiring manager can review individual evidence below."}</p>${submitted.map((card) => `<details><summary>${escapeHtml(card.interviewer)} · ${escapeHtml(card.recommendation)}</summary>${card.responses.map((response) => `<div class="score-response"><strong>${escapeHtml(response.competency)} · ${response.rating}/4</strong><p>${escapeHtml(response.evidence)}</p></div>`).join("")}</details>`).join("") || "<p>No scorecards submitted.</p>"}<div class="scorecard-form"><label>Competency<select id="scorecard-competency">${competencies.map((item) => `<option>${escapeHtml(item.name)}</option>`).join("")}</select></label><label>Rating (behavioral evidence scale)<select id="scorecard-rating"><option value="1">1 · insufficient evidence</option><option value="2">2 · partial evidence</option><option value="3" selected>3 · clear evidence</option><option value="4">4 · strong evidence</option></select></label><label>Recommendation<select id="scorecard-recommendation"><option>advance</option><option>hold</option><option>decline</option></select></label><label>Evidence-based note<textarea id="scorecard-evidence" rows="2" placeholder="Describe observed, job-related evidence"></textarea></label><button class="ghost-action" data-action="submit-scorecard">Submit independent scorecard</button></div></section>`;
+}
+
+function renderDecision(candidate) {
+  const decision = candidate.decision || { status: "Pending", owner: "Hiring manager", rationale: "Awaiting structured feedback." };
+  return `<section class="workflow-section decision-panel"><p class="eyebrow">Human decision</p><h3>${escapeHtml(decision.status)} · owned by ${escapeHtml(decision.owner)}</h3><p>${escapeHtml(decision.rationale)}</p><p class="guardrail-copy">No universal candidate score and no automated advance or rejection.</p></section>`;
+}
+
+function renderCommunicationComposer(candidate, role) {
+  const templates = { confirmation: "Application confirmation", scheduling: "Interview scheduling", status: "Status update", rejection: "Rejection", offer: "Offer-stage communication" };
+  return `<section class="workflow-section"><p class="eyebrow">Candidate communication</p><h3>Review before anything is sent</h3><label>Template<select id="message-template">${Object.entries(templates).map(([value, label]) => `<option value="${value}">${label}</option>`).join("")}</select></label><label>Editable draft<textarea id="message-draft" rows="4">Hi ${escapeHtml(candidate.name.split(" ")[0])},\n\nHere is an update about the ${escapeHtml(role?.title || "role")} process. A recruiter will review this message before it is marked approved or sent.\n\nBest,\nRecruiting</textarea></label><div class="detail-actions"><button class="ghost-action" data-action="save-draft">Save draft</button><button class="primary-action" data-action="approve-message">Approve & log</button></div><p class="section-copy">This prototype simulates status only; it sends no email.</p></section>`;
+}
+
+function renderOnboarding(candidate) {
+  if (!candidate.onboarding && candidate.stage !== "Offer") return "";
+  const handoff = candidate.onboarding;
+  if (!handoff) return `<section class="workflow-section onboarding-panel"><p class="eyebrow">Recruiting → onboarding</p><h3>Create a minimum-necessary handoff</h3><p>Only start logistics move forward. Interview notes and résumé data stay out.</p><button class="primary-action" data-action="create-handoff">Create onboarding handoff</button></section>`;
+  return `<section class="workflow-section onboarding-panel"><p class="eyebrow">Onboarding handoff</p><h3>${escapeHtml(handoff.owner)} owns the ${escapeHtml(handoff.start_date)} start</h3><dl><dt>Equipment</dt><dd>${escapeHtml(handoff.equipment)}</dd><dt>Required documents</dt><dd>${escapeHtml(handoff.documents)}</dd></dl><ol class="checklist">${handoff.tasks.map((task) => `<li>${escapeHtml(task)}</li>`).join("")}</ol><p class="guardrail-copy">Excluded: résumé, interview notes, scorecards, and unnecessary applicant information.</p></section>`;
 }
 
 function renderStageMoveButtons(candidate) {
@@ -719,7 +854,7 @@ function renderCommunications(candidate) {
   }
   return communications.map((event) => `
     <li>
-      <span class="timeline-meta">${escapeHtml(event.type)} | ${escapeHtml(event.direction)} | ${formatDate(event.event_at)}</span>
+      <span class="timeline-meta">${escapeHtml(event.status || event.type)} | ${escapeHtml(event.direction)} | ${formatDate(event.event_at)}</span>
       <strong>${escapeHtml(event.subject || "Untitled")}</strong>
       <span>${escapeHtml(event.body_preview || "")}</span>
     </li>
@@ -735,7 +870,7 @@ function handleCandidateSubmit(event) {
   const status = document.querySelector("#resume-parse-status");
   if (!resumeText) {
     if (status) {
-      status.textContent = "Add resume text first. For PDF or DOCX files, open the dashboard from http://localhost:4174/index.html and keep python3 server.py running.";
+      status.textContent = "Add resume text first. For PDF or DOCX files, open the hiring workspace from http://localhost:4174/index.html and keep python3 server.py running.";
       status.classList.add("error");
     }
     return;
@@ -752,6 +887,12 @@ function handleCandidateSubmit(event) {
     skills: parsed.skills,
     industries: [],
     stage: "New",
+    owner: "Recruiting queue",
+    next_action: "Review application",
+    due_date: new Date(Date.now() + RESPONSE_TARGET_DAYS * 86400000).toISOString().slice(0, 10),
+    stage_entered_at: new Date().toISOString(),
+    source: "Resume intake",
+    retention_status: "Demo retention policy pending",
     notes: ["Profile generated from resume intake."],
     communications: [],
     resume_text: resumeText,
@@ -762,6 +903,7 @@ function handleCandidateSubmit(event) {
   const candidates = getCandidates();
   candidates.unshift(candidate);
   saveCandidates(candidates);
+  logAudit("candidate created", candidate, "Added through browser-local résumé intake");
   form.reset();
   selectedCandidateId = candidate.candidate_id;
   renderMetrics();
@@ -831,7 +973,7 @@ async function parseResumeFile(file) {
   } catch {
     return {
       ok: false,
-      error: "Resume scanning needs the local Signal ATS demo server. Open the admin dashboard from http://localhost:4174/admin.html and keep python3 server.py running, then try again."
+      error: "Resume scanning needs the local Signal ATS server. Open the private workspace from http://localhost:4174/admin.html and keep python3 server.py running, then try again."
     };
   }
 }
@@ -890,13 +1032,55 @@ function handleDetailClick(event) {
       renderDetail(candidate.candidate_id);
       return;
     }
+    const previousStage = candidate.stage;
     candidate.stage = nextStage;
+    candidate.stage_entered_at = new Date().toISOString();
+    logAudit("stage changed", candidate, `${previousStage} → ${nextStage}`);
     pendingStageMove = null;
   }
   if (action === "note") {
     const note = document.querySelector("#new-note")?.value.trim();
     if (note) candidate.notes = [note, ...(candidate.notes || [])];
     pendingStageMove = null;
+  }
+  if (action === "save-assistance") {
+    candidate.assistant ||= { evidence: [], questions: [] };
+    candidate.assistant.summary = document.querySelector("#assistant-summary")?.value.trim() || candidate.assistant.summary;
+    logAudit("assistance edited", candidate, "Recruiter edited and saved deterministic assistance");
+  }
+  if (action === "submit-scorecard") {
+    const evidence = document.querySelector("#scorecard-evidence")?.value.trim();
+    const recommendation = document.querySelector("#scorecard-recommendation")?.value || "hold";
+    if (evidence) {
+      candidate.scorecards = [...(candidate.scorecards || []).filter((card) => card.interviewer !== "Demo interviewer"), { interviewer: "Demo interviewer", submitted: true, recommendation, responses: [{ competency: document.querySelector("#scorecard-competency")?.value || "Assigned competency", rating: Number(document.querySelector("#scorecard-rating")?.value || 3), evidence }] }];
+      logAudit("scorecard submitted", candidate, `${recommendation} recommendation with job-related evidence`);
+    }
+  }
+  if (action === "add-competency") {
+    const competency = document.querySelector("#new-competency")?.value.trim();
+    const question = document.querySelector("#new-question")?.value.trim();
+    const role = roles.find((item) => item.id === candidate.role_id);
+    if (competency && question) {
+      candidate.role_competencies = [...(candidate.role_competencies || role?.competencies || []), { id: `competency-${Date.now()}`, name: competency, question }];
+      logAudit("role competency added", candidate, competency);
+    }
+  }
+  if (["save-draft", "approve-message"].includes(action)) {
+    const body = document.querySelector("#message-draft")?.value.trim();
+    if (body) {
+      const approved = action === "approve-message";
+      candidate.communications = [{ event_id: `evt_${Date.now()}`, type: "email", direction: "outbound", status: approved ? "approved" : "draft", subject: document.querySelector("#message-template")?.selectedOptions?.[0]?.textContent || "Candidate update", body_preview: body, owner: candidate.owner || "Recruiting", event_at: new Date().toISOString() }, ...(candidate.communications || [])];
+      logAudit(approved ? "communication approved" : "draft saved", candidate, "No email sent; browser-local status only");
+    }
+  }
+  if (action === "create-handoff") {
+    candidate.onboarding = { owner: "People Operations", start_date: "2026-09-08", equipment: "Confirm laptop needs", documents: "Employment agreement and payroll forms", tasks: ["Confirm start date", "Order equipment", "Schedule orientation", "Assign first-week owner"] };
+    logAudit("onboarding handoff created", candidate, "Minimum-necessary start logistics only");
+  }
+  if (action === "export") logAudit("candidate export requested", candidate, "Prototype audit event; no file leaves the browser");
+  if (action === "delete-request") {
+    candidate.retention_status = "Deletion requested — admin review required";
+    logAudit("deletion requested", candidate, "Record retained pending authorized review");
   }
   if (["inbound-email", "outbound-email", "interview"].includes(action)) {
     const body = document.querySelector("#new-communication")?.value.trim();
@@ -921,6 +1105,7 @@ function handleDetailClick(event) {
   candidate.updated_at = new Date().toISOString();
   saveCandidates(candidates);
   renderMetrics();
+  renderOperationsDashboard();
   refreshMetricDrilldown();
   renderDetail(candidate.candidate_id);
 }
@@ -1106,7 +1291,7 @@ function handleApplicationSubmit(event) {
   saveCandidates(candidates);
   form.reset();
   const status = document.querySelector("#application-status");
-  if (status) status.textContent = "Application received. Thank you.";
+  if (status) status.textContent = "Demo application added to this browser only. No information was sent.";
 }
 
 function escapeHtml(value) {
@@ -1132,6 +1317,7 @@ function initAts() {
   renderRoleFilter();
   renderMetrics();
   renderCandidates();
+  renderOperationsDashboard();
   document.querySelector("#candidate-form")?.addEventListener("submit", handleCandidateSubmit);
   document.querySelector("input[name='file']")?.addEventListener("change", handleResumeFile);
   document.querySelector("#candidate-list")?.addEventListener("click", (event) => {
@@ -1195,6 +1381,7 @@ function initAts() {
     renderMetrics();
     renderMetricDrilldown(activeMetric);
     renderCandidates();
+    renderOperationsDashboard();
     const detail = document.querySelector("#candidate-detail");
     const name = document.querySelector("#detail-name");
     const status = document.querySelector("#detail-status");
@@ -1209,6 +1396,14 @@ function initAts() {
     }
   });
   document.querySelector("#admin-logout")?.addEventListener("click", handleAdminLogout);
+  document.querySelector("#show-audit")?.addEventListener("click", () => {
+    const dialog = document.querySelector("#audit-dialog");
+    const list = document.querySelector("#audit-list");
+    const events = JSON.parse(localStorage.getItem(AUDIT_KEY) || "[]");
+    if (list) list.innerHTML = `<ul class="timeline-list">${events.map((item) => `<li><span class="timeline-meta">${escapeHtml(item.action)} · ${formatDate(item.at)}</span><strong>${escapeHtml(item.candidate)}</strong><span>${escapeHtml(item.detail)} · ${escapeHtml(item.actor)}</span></li>`).join("") || "<li>No demo events yet. Open a candidate and take an action.</li>"}</ul>`;
+    dialog?.showModal();
+  });
+  document.querySelector("[data-close-audit]")?.addEventListener("click", () => document.querySelector("#audit-dialog")?.close());
 }
 
 function initAdminLogin() {

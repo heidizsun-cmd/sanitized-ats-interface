@@ -27,8 +27,15 @@ My contribution covered:
 The fictional careers interface publishes sample roles and accepts synthetic application information. The recruiter workspace can:
 
 - search and filter a fictional candidate pool;
-- compare candidates with open roles using inspectable evidence;
+- compare candidates with open roles using inspectable evidence without presenting a universal candidate score;
 - review structured candidate profiles;
+- assign an owner, next action, due date, and supportive response target;
+- configure role competencies and collect independent, evidence-based scorecards;
+- create editable communication drafts and record draft or approved status without sending email;
+- review deterministic, evidence-linked recruiter assistance that cannot make hiring decisions;
+- document a human decision and create a minimum-necessary onboarding handoff;
+- inspect synthetic operational analytics and browser-local audit events;
+- demonstrate retention, export-request, deletion-request, and role-permission concepts;
 - add notes and log communication activity;
 - move candidates through recruiting stages;
 - parse TXT, Markdown, DOCX, and text-based PDF resumes in local mode;
@@ -78,8 +85,8 @@ npm run check
 | Layer | Sanitized implementation |
 | --- | --- |
 | Applicant experience | Static fictional careers page and browser-local sample intake |
-| Recruiter experience | Search, filters, matching evidence, profiles, notes, communications, and stages |
-| Matching | Deterministic token and role-keyword scoring; no AI or ML claim |
+| Recruiter experience | Ownership, response targets, evidence review, scorecards, communications, human decisions, onboarding, and synthetic analytics |
+| Assistance | Deterministic evidence extraction with editable output; no connected model or automated decisions |
 | Persistence | Browser `localStorage` seeded only with synthetic candidates |
 | Local service | Python standard-library server with loopback binding, login, session checks, and resume extraction |
 | Frontend | Semantic HTML, responsive CSS, and vanilla JavaScript |
@@ -88,7 +95,7 @@ npm run check
 
 This is a portfolio prototype, not a production ATS. Do not enter real applicant information.
 
-The demo does not provide a shared database, production identity, recruiter roles, encrypted hosted storage, malware scanning, audit logs, or applicant retention and deletion workflows. Those omissions are documented explicitly rather than hidden behind a polished interface.
+The interface demonstrates role boundaries, audit events, retention state, export requests, and deletion requests in browser-local storage. It does not provide production enforcement, a shared database, managed identity, encrypted hosted storage, malware scanning, immutable audit logs, verified data-subject workflows, or real email delivery. Those boundaries are documented explicitly rather than hidden behind a polished interface.
 
 ## Repository guide
 

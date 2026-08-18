@@ -36,3 +36,9 @@ Avoid collecting sensitive information unless there is a clear legal or operatio
 - Candidate deletion/export workflow
 - Human review before hiring decisions
 - Clear consent language on the application form
+
+## Prototype boundary
+
+The portfolio UI demonstrates permission concepts, synthetic audit events, retention state, export requests, and deletion requests in browser-local storage. These controls are useful for reviewing the operating design, but they do not enforce production authorization or legal workflows. The communication composer never sends email, and the recruiter assistant is deterministic text derived from fictional résumé evidence rather than a connected model.
+
+The onboarding handoff intentionally excludes résumé text, interview notes, scorecards, and other applicant context that is not needed to prepare a start. A production implementation would additionally require counsel-approved retention schedules, verified data-subject requests, immutable audit storage, managed identity, and access reviews.

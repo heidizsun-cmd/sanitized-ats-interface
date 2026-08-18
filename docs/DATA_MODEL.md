@@ -31,6 +31,13 @@
   ],
   "certifications": [],
   "stage": "New",
+  "role_id": "mts-stack-engineer-intern-cohort",
+  "owner": "Recruiter user ID",
+  "next_action": "Review application",
+  "due_date": "2026-08-20",
+  "stage_entered_at": "2026-08-17T00:00:00Z",
+  "source": "Careers site",
+  "retention_status": "Retain until policy date",
   "notes": [],
   "tags": [],
   "resume_drive_file_id": "google_drive_file_id",
@@ -40,6 +47,18 @@
   "updated_at": "2026-07-23T00:00:00Z"
 }
 ```
+
+## Structured decision records
+
+Scorecards store the assigned interviewer, submission state, explicit advance/hold/decline recommendation, competency-level rating, and job-related evidence. Other interviewers’ content remains unavailable until the assigned interviewer submits. A separate human decision record stores the decision owner and rationale; it is never calculated from a universal candidate score.
+
+## Onboarding handoff
+
+The handoff contains only an owner, start date, equipment needs, required employment documents, orientation tasks, and first-week checklist. It does not copy résumé text, interview notes, or scorecards.
+
+## Audit and communications
+
+Communication events add a `status` of `draft`, `approved`, or `sent (simulated)`. Production audit events should record actor, action, target, timestamp, and relevant change metadata in append-only storage. The portfolio recreation keeps synthetic examples in browser-local storage only.
 
 ## Communication Event
 

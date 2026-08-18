@@ -4,32 +4,55 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#14201d">
-    <meta name="description" content="A local-first applicant tracking workspace for finding signal and keeping hiring context together.">
+    <meta name="description" content="A privacy-safe fictional People Operations workflow demonstration.">
     <meta property="og:title" content="Signal ATS — Sanitized Portfolio Demo">
     <meta property="og:description" content="See the signal. Keep the context.">
-    <title>Signal ATS — Sanitized Recruiter Workspace</title>
-    <link rel="stylesheet" href="styles.css?v=24">
+    <meta property="og:image" content="__SITE_ORIGIN__/og.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="__SITE_ORIGIN__/og.png">
+    <title>Signal ATS — Sanitized People Operations Workspace</title>
+    <link rel="stylesheet" href="styles.css?v=27">
   </head>
   <body data-page="ats">
     <header class="topbar">
-      <a class="brand" href="index.html" aria-label="Signal ATS demo home">
+      <a class="brand" href="index.html" aria-label="Signal ATS home">
         <img class="brand-mark" src="assets/signal-mark.svg" alt="">
         <span>
           <strong>Signal ATS</strong>
-          <small>Sanitized portfolio demo</small>
+          <small>Sanitized People Operations demo</small>
         </span>
       </a>
       <nav class="topnav" aria-label="Primary">
         <a href="careers.html">Careers site</a>
-        <a href="index.html" aria-current="page">Dashboard</a>
+        <a href="index.html" aria-current="page">Hiring workspace</a>
       </nav>
     </header>
 
+    <aside class="demo-banner" aria-label="Portfolio demonstration notice">
+      <strong>Sanitized portfolio recreation</strong>
+      <span>Northstar Labs and all people, roles, messages, and activity displayed here are fictional.</span>
+    </aside>
+
     <main class="app-shell">
+      <section class="story-strip" aria-label="Five minute demonstration path">
+        <div><p class="eyebrow">Fictional demo scenario</p><h2>Follow one hiring decision into a clean onboarding handoff.</h2></div>
+        <ol>
+          <li><span>1</span>Role & competencies</li><li><span>2</span>Evidence review</li><li><span>3</span>Independent scorecards</li><li><span>4</span>Human decision</li><li><span>5</span>Onboarding handoff</li>
+        </ol>
+      </section>
+
+      <section class="ops-overview" aria-label="Recruiting operations overview">
+        <div class="section-heading split">
+          <div><p class="eyebrow">Recruiting operations</p><h2>Work that needs attention</h2><p class="section-copy">Supportive prompts based on a fictional 3-day response target—not performance ratings.</p></div>
+          <span class="demo-label">Synthetic demo data</span>
+        </div>
+        <div id="ops-dashboard" class="ops-dashboard"></div>
+      </section>
+
       <section class="panel command-panel" aria-label="Candidate search">
         <div>
-          <p class="eyebrow">Recruiter cockpit</p>
-          <h1>See the signal. Keep the context.</h1>
+          <p class="eyebrow">Hiring operations</p>
+          <h1>Keep decisions clear. Keep people moving.</h1>
         </div>
         <figure class="command-mark" aria-hidden="true">
           <img src="assets/signal-mark.svg" alt="">
@@ -91,6 +114,12 @@
         </article>
       </section>
 
+      <section class="governance-bar" aria-label="Access and accountability">
+        <div><strong>Viewing as Recruiter</strong><span>Candidate details · communications · stage changes · onboarding handoff</span></div>
+        <div><strong>Role boundaries</strong><span>Interviewers: assigned scorecards · Hiring managers: decision view · Admins: access, retention, exports</span></div>
+        <button class="ghost-action" id="show-audit" type="button">View audit trail</button>
+      </section>
+
       <section class="workspace-grid">
         <aside class="panel entry-panel" aria-label="Add candidate">
           <div class="section-heading">
@@ -136,6 +165,7 @@
       </section>
     </main>
 
-    <script src="app.js?v=24"></script>
+    <dialog id="audit-dialog" class="audit-dialog"><div class="dialog-heading"><div><p class="eyebrow">Accountability</p><h2>Synthetic audit trail</h2></div><button class="dialog-close" type="button" data-close-audit aria-label="Close">×</button></div><p class="section-copy">A browser-local demonstration of events a production system would record in append-only storage.</p><div id="audit-list"></div></dialog>
+    <script src="app.js?v=27"></script>
   </body>
 </html>

@@ -10,6 +10,12 @@ This roadmap separates the working portfolio prototype from proposed production 
 - Browser-local candidate records seeded with fictional data.
 - Candidate search, filters, explainable match scoring, and role evidence.
 - Candidate stages, notes, metrics, and a manual communication timeline.
+- Role-specific competency definitions and structured scorecard demonstrations with independent-feedback visibility rules.
+- Candidate ownership, next actions, due dates, time-in-stage calculations, and supportive response-target flags.
+- Editable communication templates with draft and approval states; sending is simulated and no provider is connected.
+- Transparent deterministic résumé/feedback assistance with supporting evidence and explicit human-decision guardrails.
+- Minimum-necessary onboarding handoff for accepted fictional candidates.
+- Synthetic People Operations analytics, permission concepts, and browser-local audit, retention, export, and deletion-request demonstrations.
 - Structured candidate intake from pasted résumé text.
 - Local text extraction for TXT, Markdown, DOCX, and text-based PDF files.
 - Syntax checks and Python regression tests.
@@ -20,7 +26,8 @@ This roadmap separates the working portfolio prototype from proposed production 
 - Replace local credentials with managed identity and role-based permissions.
 - Add a validated application API with rate limiting and abuse protection.
 - Store résumé files in private object storage with malware scanning.
-- Add audit events, retention policies, consent records, export, and deletion workflows.
+- Replace demonstration permission labels with enforced RBAC and browser-local events with append-only audit storage.
+- Implement approved retention policies, identity-verified export, and authorized deletion workflows.
 - Add automated tests for browser workflows and accessibility.
 
 ## Later: Recruiting Integrations
@@ -29,7 +36,7 @@ This roadmap separates the working portfolio prototype from proposed production 
 - Match messages to candidates by email address and thread headers.
 - Synchronize résumé intake with a restricted Google Drive folder.
 - Add OCR for image-only PDFs.
-- Add scorecards, interviewer permissions, and scheduling integrations.
+- Add calendar scheduling, signed email delivery, scorecard assignment notifications, and onboarding-system integrations.
 
 ## Exploration: Assisted Search
 
