@@ -271,6 +271,7 @@ const demoCandidates = [
 let selectedCandidateId = null;
 let activeMetric = null;
 let pendingStageMove = null;
+let activeOperationsView = "people";
 const AUDIT_KEY = "signal-ats-sanitized-audit-v1";
 
 function logAudit(action, candidate, detail) {
@@ -894,16 +895,146 @@ function renderOperationsDashboard() {
   const assigned = candidates.flatMap((item) => item.scorecards || []).length;
   const sources = [...new Set(candidates.map((item) => item.source).filter(Boolean))].map((source) => `${source} ${candidates.filter((item) => item.source === source).length}`).join(" · ");
   const offers = candidates.filter((item) => item.stage === "Offer");
+  const activeCandidates = candidates.filter((item) => !["Archived", "Hired"].includes(item.stage));
+  const submittedRate = assigned ? Math.round((completed / assigned) * 100) : 0;
+  const responseRate = candidates.length ? Math.round(((candidates.length - overdue.length) / candidates.length) * 100) : 0;
+  const acceptedOffers = offers.filter((item) => item.onboarding).length;
+  const offerRate = offers.length ? Math.round((acceptedOffers / offers.length) * 100) : 0;
+  const averageDaysInStage = activeCandidates.length
+    ? Math.round(activeCandidates.reduce((total, item) => total + daysInStage(item), 0) / activeCandidates.length)
+    : 0;
+  const sourceCount = new Set(candidates.map((item) => item.source).filter(Boolean)).size;
+  const exitCount = candidates.filter((item) => item.exit_reason).length;
+  const pipelineStages = ["New", "Review", "Shortlist", "Interview", "Offer"];
+  const pipeline = pipelineStages.map((stage) => ({
+    stage,
+    count: candidates.filter((item) => item.stage === stage).length
+  }));
+  const pipelineMax = Math.max(...pipeline.map((item) => item.count), 1);
+  const auditEvents = JSON.parse(localStorage.getItem(AUDIT_KEY) || "[]");
+  const ownedCandidates = candidates.filter((item) => item.owner && item.owner !== "Unassigned").length;
+  const retentionAssigned = candidates.filter((item) => item.retention_status).length;
   root.innerHTML = `
     <article class="attention-queue"><strong>${overdue.length} follow-up${overdue.length === 1 ? "" : "s"} need attention</strong><span>${overdue.map((item) => `${escapeHtml(item.name)} — ${daysInStage(item)} days in ${escapeHtml(item.stage)}`).join("<br>") || "Nothing overdue today."}</span></article>
-    <dl class="analytics-list">
-      <div><dt>Candidates by stage</dt><dd>${stageCounts}</dd></div>
-      <div><dt>Interview completion</dt><dd>${completed} of ${assigned} assigned scorecards submitted</dd></div>
-      <div><dt>Response-time compliance</dt><dd>${candidates.length - overdue.length} of ${candidates.length} within the ${RESPONSE_TARGET_DAYS}-day demo target</dd></div>
-      <div><dt>Source distribution</dt><dd>${sources || "No source data"}</dd></div>
-      <div><dt>Offer acceptance</dt><dd>${offers.filter((item) => item.onboarding).length} accepted of ${offers.length} offer-stage candidates</dd></div>
-      <div><dt>Exit reasons</dt><dd>${candidates.filter((item) => item.exit_reason).map((item) => item.exit_reason).join(" · ") || "No exits in the current scenario"}</dd></div>
-    </dl>`;
+    <article class="hiring-metrics-tile" aria-labelledby="hiring-metrics-title">
+      <header class="hiring-metrics-header">
+        <div><p class="eyebrow">Business hiring metrics</p><h3 id="hiring-metrics-title">Hiring function snapshot</h3></div>
+        <button class="metrics-export" type="button" data-export-metrics>Export ${activeOperationsView === "people" ? "People Ops" : activeOperationsView === "finance" ? "Finance" : "Internal Audit"} CSV</button>
+      </header>
+      <div class="metrics-view-tabs" role="tablist" aria-label="Metric audience">
+        <button type="button" role="tab" data-operations-view="people" aria-selected="${activeOperationsView === "people"}">People Ops</button>
+        <button type="button" role="tab" data-operations-view="finance" aria-selected="${activeOperationsView === "finance"}">Finance</button>
+        <button type="button" role="tab" data-operations-view="audit" aria-selected="${activeOperationsView === "audit"}">Internal Audit</button>
+      </div>
+      <div class="metrics-view-panel" role="tabpanel" ${activeOperationsView === "people" ? "" : "hidden"}>
+      <dl class="hiring-kpi-grid">
+        <div><dt>Open roles</dt><dd>${roles.length}</dd><small>Across ${new Set(roles.map((role) => role.team)).size} teams</small></div>
+        <div><dt>Active pipeline</dt><dd>${activeCandidates.length}</dd><small>${stageCounts}</small></div>
+        <div><dt>Avg. days in stage</dt><dd>${averageDaysInStage}</dd><small>Active candidates</small></div>
+        <div><dt>Response target</dt><dd>${responseRate}%</dd><small>${candidates.length - overdue.length} of ${candidates.length} within ${RESPONSE_TARGET_DAYS} days</small></div>
+        <div><dt>Interview completion</dt><dd>${submittedRate}%</dd><small>${completed} of ${assigned} scorecards submitted</small></div>
+        <div><dt>Offer acceptance</dt><dd>${offerRate}%</dd><small>${acceptedOffers} accepted of ${offers.length} at offer stage</small></div>
+      </dl>
+      <section class="pipeline-metrics" aria-labelledby="pipeline-metrics-title">
+        <div class="metrics-subhead"><div><p class="eyebrow">Pipeline analytics</p><h4 id="pipeline-metrics-title">Point-in-time funnel</h4></div><span>${activeCandidates.length} active</span></div>
+        <ol class="pipeline-funnel">
+          ${pipeline.map((item) => `<li><span class="pipeline-stage"><strong>${item.count}</strong>${item.stage}</span><span class="pipeline-bar" aria-hidden="true"><i style="width:${Math.max((item.count / pipelineMax) * 100, item.count ? 8 : 0)}%"></i></span><small>${candidates.length ? Math.round((item.count / candidates.length) * 100) : 0}% of all records</small></li>`).join("")}
+        </ol>
+        <p class="funnel-definition">This is current pipeline inventory, not cohort conversion. True stage-to-stage conversion and time-to-hire require historical stage events and requisition open/close dates.</p>
+      </section>
+      <div class="hiring-metrics-detail">
+        <p><strong>Source mix</strong><span>${sources || "No source data"} · ${sourceCount} channel${sourceCount === 1 ? "" : "s"}</span></p>
+        <p><strong>Exits</strong><span>${exitCount ? candidates.filter((item) => item.exit_reason).map((item) => escapeHtml(item.exit_reason)).join(" · ") : "No recorded exits"}</span></p>
+      </div>
+      </div>
+      <div class="metrics-view-panel" role="tabpanel" ${activeOperationsView === "finance" ? "" : "hidden"}>
+      <section class="finance-readiness" aria-labelledby="finance-readiness-title">
+        <div class="metrics-subhead"><div><p class="eyebrow">Finance & accounting</p><h4 id="finance-readiness-title">Hiring-cost data readiness</h4></div><span>4 inputs needed</span></div>
+        <dl class="finance-summary">
+          <div><dt>Open requisitions</dt><dd>${roles.length}</dd></div>
+          <div><dt>Offer-stage candidates</dt><dd>${offers.length}</dd></div>
+          <div><dt>Accepted offers</dt><dd>${acceptedOffers}</dd></div>
+          <div><dt>Active candidate load</dt><dd>${activeCandidates.length}</dd></div>
+        </dl>
+        <dl>
+          <div><dt>Approved headcount plan</dt><dd>Not connected</dd></div>
+          <div><dt>Compensation budget</dt><dd>Not connected</dd></div>
+          <div><dt>Agency & recruiting spend</dt><dd>Not connected</dd></div>
+          <div><dt>New-hire payroll start</dt><dd>Not connected</dd></div>
+        </dl>
+        <p>Once connected, finance can reconcile planned vs. filled headcount, committed compensation, recruiting spend, cost per hire, and forecast variance by role, team, and period.</p>
+      </section>
+      </div>
+      <div class="metrics-view-panel" role="tabpanel" ${activeOperationsView === "audit" ? "" : "hidden"}>
+        <section class="audit-metrics" aria-labelledby="audit-metrics-title">
+          <div class="metrics-subhead"><div><p class="eyebrow">Controls & traceability</p><h4 id="audit-metrics-title">Hiring control coverage</h4></div><span>Current demo</span></div>
+          <dl class="hiring-kpi-grid audit-kpis">
+            <div><dt>Owner assigned</dt><dd>${candidates.length ? Math.round((ownedCandidates / candidates.length) * 100) : 0}%</dd><small>${ownedCandidates} of ${candidates.length} records</small></div>
+            <div><dt>Retention status</dt><dd>${candidates.length ? Math.round((retentionAssigned / candidates.length) * 100) : 0}%</dd><small>${retentionAssigned} of ${candidates.length} records</small></div>
+            <div><dt>Scorecard evidence</dt><dd>${submittedRate}%</dd><small>${completed} of ${assigned} submitted</small></div>
+            <div><dt>Overdue actions</dt><dd>${overdue.length}</dd><small>Against ${RESPONSE_TARGET_DAYS}-day demo target</small></div>
+            <div><dt>Audit events</dt><dd>${auditEvents.length}</dd><small>Browser-local activity records</small></div>
+            <div><dt>Exit reasons</dt><dd>${exitCount}</dd><small>Documented candidate exits</small></div>
+          </dl>
+          <div class="control-gaps"><strong>Controls requiring connected systems</strong><span>Requisition approval · compensation exceptions · background checks · eligibility documents · segregation of duties · payroll reconciliation</span></div>
+        </section>
+      </div>
+      <p class="metrics-coverage-note">Calculated from fictional browser-local records. Protected-trait data is intentionally excluded. Quality of hire should only be added with governed, job-related outcome definitions and appropriate access controls.</p>
+      <p class="sr-only" role="status" data-export-status></p>
+    </article>`;
+}
+
+function metricsExportRows(view) {
+  const candidates = getCandidates();
+  const overdue = candidates.filter(isOverdue);
+  const active = candidates.filter((item) => !["Archived", "Hired"].includes(item.stage));
+  const offers = candidates.filter((item) => item.stage === "Offer");
+  const accepted = offers.filter((item) => item.onboarding).length;
+  const cards = candidates.flatMap((item) => item.scorecards || []);
+  const completed = cards.filter((item) => item.submitted).length;
+  const row = (metric, value, definition, source = "Signal ATS demo", status = "Available") => ({ metric, value, definition, source, status });
+  if (view === "finance") return [
+    row("Open requisitions", roles.length, "Open roles in the recruiting system"),
+    row("Offer-stage candidates", offers.length, "Candidates currently in Offer"),
+    row("Accepted offers", accepted, "Offer-stage candidates with an onboarding handoff"),
+    row("Active candidate load", active.length, "Candidates not Archived or Hired"),
+    row("Approved headcount plan", "", "Approved positions by team, cost center, level, and period", "Finance planning system", "Not connected"),
+    row("Compensation budget", "", "Approved compensation range and fully loaded cost", "Finance / compensation system", "Not connected"),
+    row("Recruiting spend", "", "Agency, advertising, travel, relocation, and technology spend", "General ledger / AP", "Not connected"),
+    row("Payroll start", "", "Actual employee start date and payroll activation", "HRIS / payroll", "Not connected")
+  ];
+  if (view === "audit") return [
+    row("Owner assignment coverage", `${candidates.length ? Math.round(candidates.filter((item) => item.owner && item.owner !== "Unassigned").length / candidates.length * 100) : 0}%`, "Candidate records with an assigned owner"),
+    row("Retention-status coverage", `${candidates.length ? Math.round(candidates.filter((item) => item.retention_status).length / candidates.length * 100) : 0}%`, "Candidate records with a retention status"),
+    row("Scorecard submission", `${cards.length ? Math.round(completed / cards.length * 100) : 0}%`, "Submitted assigned scorecards"),
+    row("Overdue actions", overdue.length, `Actions outside the ${RESPONSE_TARGET_DAYS}-day demo target`),
+    row("Audit events", JSON.parse(localStorage.getItem(AUDIT_KEY) || "[]").length, "Browser-local recorded workspace events"),
+    row("Requisition and compensation approvals", "", "Approval and exception evidence", "Finance / HRIS approval workflow", "Not connected")
+  ];
+  return [
+    row("Open roles", roles.length, "Roles currently open"),
+    row("Active pipeline", active.length, "Candidates not Archived or Hired"),
+    ...["New", "Review", "Shortlist", "Interview", "Offer"].map((stage) => row(`${stage} candidates`, candidates.filter((item) => item.stage === stage).length, "Point-in-time pipeline inventory")),
+    row("Average days in stage", active.length ? Math.round(active.reduce((sum, item) => sum + daysInStage(item), 0) / active.length) : 0, "Average across active candidates"),
+    row("Offer acceptance", `${offers.length ? Math.round(accepted / offers.length * 100) : 0}%`, "Accepted offers divided by offer-stage candidates"),
+    row("Historical funnel conversion", "", "Cohort stage-to-stage conversion", "Stage event history", "Not connected")
+  ];
+}
+
+function exportOperationsMetrics() {
+  const rows = metricsExportRows(activeOperationsView);
+  const columns = ["metric", "value", "definition", "source", "status"];
+  const quote = (value) => `"${String(value ?? "").replaceAll('"', '""')}"`;
+  const csv = [columns.join(","), ...rows.map((row) => columns.map((column) => quote(row[column])).join(","))].join("\n");
+  const blob = new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `signal-ats-${activeOperationsView}-metrics.csv`;
+  link.click();
+  URL.revokeObjectURL(url);
+  const status = document.querySelector("[data-export-status]");
+  if (status) status.textContent = `${activeOperationsView} metrics CSV exported.`;
 }
 
 function renderAssistant(candidate) {
@@ -1490,6 +1621,15 @@ function initAts() {
   renderMetrics();
   renderCandidates();
   renderOperationsDashboard();
+  document.querySelector("#ops-dashboard")?.addEventListener("click", (event) => {
+    const viewButton = event.target.closest("[data-operations-view]");
+    if (viewButton) {
+      activeOperationsView = viewButton.dataset.operationsView;
+      renderOperationsDashboard();
+      return;
+    }
+    if (event.target.closest("[data-export-metrics]")) exportOperationsMetrics();
+  });
   document.querySelector("#candidate-form")?.addEventListener("submit", handleCandidateSubmit);
   document.querySelector("input[name='file']")?.addEventListener("change", handleResumeFile);
   document.querySelector("#candidate-list")?.addEventListener("click", (event) => {

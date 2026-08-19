@@ -2491,13 +2491,52 @@ label {
 .ops-overview { margin-bottom: 14px; padding: 22px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255,255,255,.82); }
 .section-copy { margin: 5px 0 0; color: var(--muted); font-size: 13px; }
 .demo-label,.assist-label { width: max-content; padding: 5px 8px; border-radius: 6px; background: var(--mint); color: var(--green-dark); font-size: 11px; font-weight: 850; text-transform: uppercase; }
-.ops-dashboard { display: grid; grid-template-columns: minmax(240px,.65fr) 1.35fr; gap: 14px; }
+.ops-dashboard { display: grid; grid-template-columns: minmax(240px,.52fr) 1.48fr; gap: 14px; align-items: start; }
 .attention-queue { padding: 16px; border-left: 4px solid var(--gold); border-radius: 8px; background: #fff8e7; display: grid; gap: 8px; }
 .attention-queue span { color: var(--muted); font-size: 13px; }
-.analytics-list { margin: 0; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-.analytics-list div { padding: 10px 12px; background: white; }
-.analytics-list dt { color: var(--muted); font-size: 11px; font-weight: 850; text-transform: uppercase; }
-.analytics-list dd { margin: 3px 0 0; font-size: 13px; }
+.hiring-metrics-tile { overflow: hidden; border: 1px solid var(--line); border-top: 4px solid var(--green); border-radius: 10px; background: white; box-shadow: 0 12px 30px rgba(20,32,29,.06); }
+.hiring-metrics-header { padding: 15px 16px 13px; display: flex; align-items: start; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--line); }
+.hiring-metrics-header h3 { margin: 2px 0 0; font-size: 18px; }
+.metrics-export { min-height: 34px; padding: 7px 11px; border: 1px solid var(--green); border-radius: 6px; background: var(--green); color: white; font-size: 11px; font-weight: 800; }
+.metrics-view-tabs { padding: 0 16px; display: flex; gap: 2px; border-bottom: 1px solid var(--line); background: #f7f8f5; }
+.metrics-view-tabs button { min-height: 40px; padding: 0 12px; border: 0; border-bottom: 3px solid transparent; border-radius: 0; background: transparent; color: var(--muted); font-size: 12px; font-weight: 800; }
+.metrics-view-tabs button[aria-selected="true"] { border-bottom-color: var(--green); color: var(--green-dark); }
+.metrics-view-panel[hidden] { display: none !important; }
+.metric-period { padding: 5px 8px; border-radius: 999px; background: var(--mint); color: var(--green-dark); font-size: 11px; font-weight: 800; white-space: nowrap; }
+.hiring-kpi-grid { margin: 0; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); }
+.hiring-kpi-grid div { min-width: 0; padding: 14px 16px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.hiring-kpi-grid div:nth-child(3n) { border-right: 0; }
+.hiring-kpi-grid dt { color: var(--muted); font-size: 10px; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; }
+.hiring-kpi-grid dd { margin: 4px 0 2px; color: var(--ink); font-size: 25px; font-weight: 780; line-height: 1; }
+.hiring-kpi-grid small { display: block; overflow-wrap: anywhere; color: var(--muted); font-size: 11px; line-height: 1.35; }
+.hiring-metrics-detail { padding: 12px 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.hiring-metrics-detail p { margin: 0; display: grid; gap: 3px; font-size: 12px; }
+.hiring-metrics-detail span { color: var(--muted); line-height: 1.45; }
+.pipeline-metrics,.finance-readiness { padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.metrics-subhead { margin-bottom: 11px; display: flex; align-items: start; justify-content: space-between; gap: 16px; }
+.metrics-subhead h4 { margin: 2px 0 0; font-size: 15px; }
+.metrics-subhead > span { color: var(--muted); font-size: 11px; font-weight: 750; }
+.pipeline-funnel { margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 8px; list-style: none; }
+.pipeline-funnel li { min-width: 0; display: grid; gap: 5px; }
+.pipeline-stage { display: flex; align-items: baseline; gap: 5px; color: var(--muted); font-size: 10px; font-weight: 800; text-transform: uppercase; }
+.pipeline-stage strong { color: var(--ink); font-size: 18px; }
+.pipeline-bar { overflow: hidden; height: 6px; border-radius: 99px; background: #e8ece8; }
+.pipeline-bar i { display: block; height: 100%; border-radius: inherit; background: var(--green); }
+.pipeline-funnel small { color: var(--muted); font-size: 9px; }
+.funnel-definition { margin: 10px 0 0; color: var(--muted); font-size: 10px; line-height: 1.4; }
+.finance-readiness { background: #fbfaf6; }
+.finance-summary { margin-bottom: 10px !important; }
+.finance-summary dd { color: var(--ink) !important; font-size: 20px !important; }
+.finance-readiness dl { margin: 0; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 7px; }
+.finance-readiness dl div { padding: 8px 9px; border: 1px solid var(--line); border-radius: 6px; background: white; }
+.finance-readiness dt { color: var(--muted); font-size: 10px; font-weight: 800; text-transform: uppercase; }
+.finance-readiness dd { margin: 3px 0 0; color: #8a5b13; font-size: 12px; font-weight: 750; }
+.finance-readiness > p { margin: 9px 0 0; color: var(--muted); font-size: 11px; line-height: 1.45; }
+.audit-metrics { background: #fbfaf6; }
+.audit-kpis { border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.control-gaps { margin: 12px 16px 16px; padding: 11px 12px; display: grid; gap: 4px; border-left: 3px solid var(--gold); background: #fff8e7; font-size: 12px; }
+.control-gaps span { color: var(--muted); line-height: 1.45; }
+.metrics-coverage-note { margin: 0; padding: 10px 16px; border-top: 1px solid var(--line); background: #f7f8f5; color: var(--muted); font-size: 11px; line-height: 1.45; }
 .governance-bar { margin-bottom: 14px; padding: 14px 18px; border: 1px solid var(--line); border-radius: 12px; background: #fffefa; display: grid; grid-template-columns: .8fr 1.6fr auto; gap: 18px; align-items: center; }
 .governance-bar div { display: grid; gap: 2px; }
 .governance-bar span { color: var(--muted); font-size: 12px; }
@@ -2521,7 +2560,8 @@ label {
 .audit-dialog::backdrop { background: rgba(20,32,29,.56); }
 .dialog-heading { display: flex; justify-content: space-between; gap: 18px; }
 .dialog-close { width: 36px; height: 36px; min-height: 36px; border-radius: 50%; }
-@media (max-width: 800px) { .story-strip,.ops-dashboard,.governance-bar { grid-template-columns: 1fr; } .story-strip ol { grid-template-columns: repeat(2,1fr); } .analytics-list { grid-template-columns: 1fr; } }
+@media (max-width: 800px) { .story-strip,.ops-dashboard,.governance-bar { grid-template-columns: 1fr; } .story-strip ol { grid-template-columns: repeat(2,1fr); } .hiring-kpi-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } .hiring-kpi-grid div:nth-child(3n) { border-right: 1px solid var(--line); } .hiring-kpi-grid div:nth-child(2n) { border-right: 0; } .hiring-metrics-detail { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .hiring-kpi-grid,.finance-readiness dl { grid-template-columns: 1fr; } .hiring-kpi-grid div,.hiring-kpi-grid div:nth-child(3n) { border-right: 0; } .pipeline-funnel { grid-template-columns: 1fr; } .pipeline-funnel li { grid-template-columns: 92px 1fr auto; align-items: center; } .pipeline-funnel small { text-align: right; } }
 
 /* Public portfolio demo controls */
 .centered-action { display: flex; align-items: center; justify-content: center; text-decoration: none; }
