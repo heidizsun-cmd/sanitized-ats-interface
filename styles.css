@@ -359,7 +359,7 @@ button,
   opacity: 1;
 }
 
-.metrics-grid span {
+.metric-card > span[id^="metric-"] {
   display: block;
   font-size: 32px;
   font-weight: 850;
@@ -2059,7 +2059,7 @@ label {
   background: rgba(255, 253, 248, 0.88);
 }
 
-.metrics-grid span {
+.metric-card > span[id^="metric-"] {
   color: var(--navy);
   font-family: var(--serif);
   font-size: 38px;
