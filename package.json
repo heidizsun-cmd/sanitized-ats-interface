@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Local-first ATS portfolio prototype with a careers page, recruiter dashboard, and resume parsing.",
+  "description": "Static browser-local ATS portfolio demo with fictional data and explainable matching.",
   "scripts": {
-    "preview": "python3 server.py",
-    "check": "node --check app.js && python3 -m unittest -v"
+    "dev": "npx serve . -l 4174",
+    "test": "node --test",
+    "check": "node --check app.js && node --check demo-logic.js && node --test"
   }
 }

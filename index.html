@@ -4,32 +4,55 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#14201d">
-    <meta name="description" content="A local-first applicant tracking workspace for finding signal and keeping hiring context together.">
+    <meta name="description" content="A privacy-safe fictional People Operations workflow demonstration.">
     <meta property="og:title" content="Signal ATS — Sanitized Portfolio Demo">
     <meta property="og:description" content="See the signal. Keep the context.">
-    <title>Signal ATS — Sanitized Recruiter Workspace</title>
-    <link rel="stylesheet" href="styles.css?v=24">
+    <title>Signal ATS — Sanitized People Operations Workspace</title>
+    <link rel="stylesheet" href="styles.css?v=30">
   </head>
   <body data-page="ats">
     <header class="topbar">
-      <a class="brand" href="index.html" aria-label="Signal ATS demo home">
+      <a class="brand" href="index.html" aria-label="Signal ATS home">
         <img class="brand-mark" src="assets/signal-mark.svg" alt="">
         <span>
           <strong>Signal ATS</strong>
-          <small>Sanitized portfolio demo</small>
+          <small>Sanitized People Operations demo</small>
         </span>
       </a>
       <nav class="topnav" aria-label="Primary">
         <a href="careers.html">Careers site</a>
-        <a href="index.html" aria-current="page">Dashboard</a>
+        <a href="index.html" aria-current="page">Hiring workspace</a>
+        <button class="topnav-button" type="button" id="presentation-mode">Presentation mode</button>
+        <button class="topnav-button" type="button" data-start-tour>Tour</button>
+        <button class="topnav-button" type="button" data-open-limitations>Limitations</button>
       </nav>
     </header>
 
+    <aside class="demo-banner" aria-label="Portfolio demonstration notice">
+      <strong>Sanitized portfolio demo</strong>
+      <span>Public demo · fictional data · stored only in this browser · never use real applicant information.</span>
+    </aside>
+
     <main class="app-shell">
-      <section class="panel command-panel" aria-label="Candidate search">
+      <section class="story-strip" aria-label="Five minute demonstration path">
+        <div><p class="eyebrow">Fictional demo scenario</p><h2>Follow one hiring decision into a clean onboarding handoff.</h2></div>
+        <ol>
+          <li><span>1</span>Role & competencies</li><li><span>2</span>Evidence review</li><li><span>3</span>Independent scorecards</li><li><span>4</span>Human decision</li><li><span>5</span>Onboarding handoff</li>
+        </ol>
+      </section>
+
+      <section class="ops-overview" aria-label="Recruiting operations overview">
+        <div class="section-heading split">
+          <div><p class="eyebrow">Recruiting operations</p><h2>Work that needs attention</h2><p class="section-copy">Supportive prompts based on a fictional 3-day response target—not performance ratings.</p></div>
+          <span class="demo-label">Synthetic demo data</span>
+        </div>
+        <div id="ops-dashboard" class="ops-dashboard"></div>
+      </section>
+
+      <section class="panel command-panel" aria-label="Candidate search" data-tour-target="search">
         <div>
-          <p class="eyebrow">Recruiter cockpit</p>
-          <h1>See the signal. Keep the context.</h1>
+          <p class="eyebrow">Hiring operations</p>
+          <h1>Keep decisions clear. Keep people moving.</h1>
         </div>
         <figure class="command-mark" aria-hidden="true">
           <img src="assets/signal-mark.svg" alt="">
@@ -55,6 +78,13 @@
           <label>
             Minimum years
             <input id="years-filter" type="number" min="0" step="1" value="0">
+          </label>
+          <label>
+            Background
+            <select id="background-filter">
+              <option value="all">All backgrounds</option>
+              <option value="athlete">Athlete experience</option>
+            </select>
           </label>
           <label>
             Role match
@@ -91,6 +121,13 @@
         </article>
       </section>
 
+      <section class="governance-bar" aria-label="Access and accountability">
+        <label class="founder-switcher">Logged in as<select id="active-founder" aria-label="Active founding team member"></select></label>
+        <div><strong>Founder workspace</strong><span>Notes are attributed to the active founding team member</span></div>
+        <div><strong>Role boundaries</strong><span>Interviewers: assigned scorecards · Hiring managers: decision view · Admins: access, retention, exports</span></div>
+        <button class="ghost-action" id="show-audit" type="button">View audit trail</button>
+      </section>
+
       <section class="workspace-grid">
         <aside class="panel entry-panel" aria-label="Add candidate">
           <div class="section-heading">
@@ -100,12 +137,13 @@
           <form id="candidate-form" class="stacked-form">
             <label class="file-drop">
               <span>Choose résumé</span>
-              <small>TXT, MD, or pasted text</small>
-              <input name="file" type="file" accept=".txt,.md,.csv">
+            <small>Browser-local TXT, Markdown, or CSV</small>
+            <input name="file" type="file" accept=".txt,.md,.markdown,.csv,text/plain,text/markdown,text/csv">
             </label>
             <label>Resume text preview<textarea name="resume" rows="10" placeholder="Choose a fictional resume file. Signal ATS will scan it and place extracted text here for review."></textarea></label>
             <p id="resume-parse-status" class="form-status" role="status"></p>
-            <button class="primary-action wide" type="submit">Add to pipeline</button>
+            <p class="privacy-note">Files are read only in this browser, are never transmitted, and are not retained as files. Use fictional content only.</p>
+            <button class="primary-action wide" type="submit">Add fictional candidate</button>
           </form>
         </aside>
 
@@ -116,7 +154,7 @@
               <h2>Candidate results</h2>
               <p id="pipeline-role-context" class="pipeline-role-context" hidden></p>
             </div>
-            <button class="ghost-action" id="reset-data" type="button">Reset demo</button>
+            <button class="ghost-action" id="reset-data" type="button" data-tour-target="reset">Reset demo</button>
           </div>
           <div id="candidate-list" class="candidate-list"></div>
         </section>
@@ -136,6 +174,9 @@
       </section>
     </main>
 
-    <script src="app.js?v=24"></script>
+    <dialog id="audit-dialog" class="audit-dialog"><div class="dialog-heading"><div><p class="eyebrow">Accountability</p><h2>Synthetic audit trail</h2></div><button class="dialog-close" type="button" data-close-audit aria-label="Close">×</button></div><p class="section-copy">A browser-local demonstration of events a production system would record in append-only storage.</p><div id="audit-list"></div></dialog>
+    <dialog id="limitations-dialog" class="audit-dialog"><div class="dialog-heading"><div><p class="eyebrow">Product boundaries</p><h2>Demo limitations</h2></div><button class="dialog-close" type="button" data-close-limitations aria-label="Close">×</button></div><div data-limitations-content></div></dialog>
+    <dialog id="tour-dialog" class="tour-dialog"><p class="eyebrow">Guided demo <span id="tour-progress"></span></p><h2 id="tour-title"></h2><p id="tour-copy"></p><div class="detail-actions"><button class="ghost-action" type="button" data-tour-skip>Skip tour</button><button class="ghost-action" type="button" data-tour-prev>Back</button><button class="primary-action" type="button" data-tour-next>Next</button></div></dialog>
+    <script type="module" src="app.js?v=33"></script>
   </body>
 </html>

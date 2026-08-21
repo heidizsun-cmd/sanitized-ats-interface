@@ -1,4 +1,13 @@
-const STORAGE_KEY = "signal-ats-sanitized-demo-v1";
+import { calculateRoleMatch, isValidEmail } from "./demo-logic.js";
+
+const STORAGE_KEY = "signal-ats-sanitized-demo-v4";
+const ACTIVE_FOUNDER_KEY = "signal-ats-active-founder-v1";
+const founders = [
+  { id: "maya-ceo", name: "Maya Chen", role: "CEO" },
+  { id: "theo-cto", name: "Theo Brooks", role: "CTO" },
+  { id: "lena-coo", name: "Lena Ortiz", role: "COO" }
+];
+const RESPONSE_TARGET_DAYS = 3;
 const roles = [
   {
     id: "chief-financial-officer",
@@ -6,8 +15,8 @@ const roles = [
     team: "Finance & Operations",
     location: "United States · Remote-friendly",
     type: "Full-time",
-    summary: "Own Northstar Labs’ financial strategy and build the operating discipline that helps a small, ambitious company scale with clarity.",
-    overview: "Northstar Labs is looking for a hands-on CFO who can move comfortably between long-range strategy and the details of running a rigorous finance function. You will be a close partner to the CEO and leadership team, turning business signals into better decisions while building the systems, controls, and planning cadence the company needs for its next stage.",
+    summary: "Own Northstar Labs’ financial strategy and build the operating discipline that helps a small, ambitious fictional company scale with clarity.",
+    overview: "Northstar Labs is looking for a hands-on CFO who can move comfortably between long-range strategy and the details of running a rigorous finance function. You will be a close partner to the fictional leadership team, turning business signals into better decisions while building durable systems and controls.",
     responsibilities: [
       "Own the company financial plan, forecasting model, budgeting process, and operating reviews.",
       "Advise the CEO and leadership team on capital allocation, growth tradeoffs, fundraising, and risk.",
@@ -34,8 +43,8 @@ const roles = [
     team: "Engineering",
     location: "San Francisco · Hybrid",
     type: "Internship · Cohort",
-    summary: "Join a small engineering cohort and ship real product work across Northstar Labs’ frontend, services, and data layer with close mentorship.",
-    overview: "The MTS Stack Engineer Intern Cohort is designed for early-career builders who learn fastest by working on real products with experienced engineers. You will join a small cohort, own a scoped customer problem, and contribute production-quality work across the stack while learning how Northstar Labs turns ambiguity into useful software.",
+    summary: "Join a small engineering cohort and ship fictional product work across Northstar Labs’ frontend, services, and data layer with close mentorship.",
+    overview: "The MTS Stack Engineer Intern Cohort is a fictional role for early-career builders who learn through scoped projects with experienced engineers. The scenario demonstrates how Northstar Labs turns ambiguity into useful software.",
     responsibilities: [
       "Build and ship a scoped product feature across the browser, application services, and data layer.",
       "Pair with engineers on technical design, implementation, testing, and thoughtful code review.",
@@ -55,6 +64,11 @@ const roles = [
       "Interest in product engineering and making complex workflows feel simple."
     ],
     keywords: ["javascript", "typescript", "react", "python", "api", "sql", "full stack", "computer science", "intern"]
+    ,competencies: [
+      { id: "problem-solving", name: "Structured problem solving", question: "Walk through a technical problem you scoped and solved." },
+      { id: "collaboration", name: "Collaborative learning", question: "Tell us about a time feedback changed your approach." },
+      { id: "execution", name: "End-to-end execution", question: "Show us something you finished and explain the tradeoffs." }
+    ]
   }
 ];
 
@@ -96,7 +110,18 @@ const demoCandidates = [
     skills: ["Financial planning", "Accounting", "Fundraising", "B2B SaaS", "Team management"],
     industries: ["SaaS", "Fintech"],
     stage: "Shortlist",
-    notes: ["Strong CFO profile with a pragmatic operating style and board experience."],
+    role_id: "chief-financial-officer",
+    owner: "Jordan Lee",
+    next_action: "Confirm board-partner interview panel",
+    due_date: "2026-08-19",
+    stage_entered_at: "2026-08-15T16:00:00Z",
+    source: "Referral",
+    background_tags: ["Former collegiate athlete", "Track & field"],
+    exit_reason: "",
+    notes: [
+      { author: "Maya Chen", role: "CEO", text: "Strong CFO profile with a pragmatic operating style. Please press on how she handled a board disagreement during a difficult planning cycle.", created_at: "2026-08-15T18:20:00Z" },
+      { author: "Lena Ortiz", role: "COO", text: "I like the operating range. Ask for a concrete example of rebuilding a finance process while the company was still scaling quickly.", created_at: "2026-08-16T16:10:00Z" }
+    ],
     communications: [
       {
         event_id: "evt_101",
@@ -117,7 +142,8 @@ const demoCandidates = [
         event_at: "2026-07-23T18:10:00Z"
       }
     ],
-    resume_text: "VP of Finance and Operations with 14 years of financial planning, accounting, SaaS metrics, fundraising, board reporting, and team leadership experience."
+    resume_file_name: "priya-chen-resume.txt",
+    resume_text: "PRIYA CHEN\nVP, FINANCE & OPERATIONS\nSan Francisco, CA | priya.chen@example.com\n\n14 years of experience leading financial planning, accounting, SaaS metrics, fundraising, board reporting, and finance teams. Former NCAA track & field student-athlete."
   },
   {
     candidate_id: "cand_102",
@@ -130,7 +156,33 @@ const demoCandidates = [
     skills: ["TypeScript", "React", "Python", "SQL", "API integration"],
     industries: ["Developer tools", "Education"],
     stage: "Interview",
-    notes: ["Built and shipped two full-stack projects; strong fit for a mentored cohort."],
+    role_id: "mts-stack-engineer-intern-cohort",
+    owner: "Sam Patel",
+    next_action: "Review completed scorecards",
+    due_date: "2026-08-18",
+    stage_entered_at: "2026-08-13T17:00:00Z",
+    source: "Careers site",
+    background_tags: ["Student athlete", "NCAA soccer"],
+    exit_reason: "",
+    retention_status: "Retain until Feb 17, 2027",
+    scorecards: [
+      { interviewer: "Avery Kim", submitted: true, recommendation: "advance", responses: [
+        { competency: "Structured problem solving", rating: 4, evidence: "Explained API retry tradeoffs and connected the choice to observed failure modes." },
+        { competency: "Collaborative learning", rating: 4, evidence: "Described revising a data model after peer review and what improved." },
+        { competency: "End-to-end execution", rating: 3, evidence: "Shipped a course-planning app with tests; monitoring depth remains an interview follow-up." }
+      ]},
+      { interviewer: "Noah Williams", submitted: false, recommendation: "hold", responses: [] }
+    ],
+    decision: { status: "Pending", owner: "Morgan Davis", rationale: "Waiting for the second independent scorecard." },
+    assistant: {
+      summary: "Marcus describes two completed full-stack projects using TypeScript, React, Python, SQL, APIs, testing, and Git.",
+      evidence: ["Résumé: “two full-stack projects”", "Résumé lists TypeScript, React, Python, SQL, REST APIs, testing, and Git"],
+      questions: ["What tradeoff did you make while shipping one project?", "How did testing change the way you designed an API?"]
+    },
+    notes: [
+      { author: "Theo Brooks", role: "CTO", text: "The project work is promising. Please ask Marcus to whiteboard the retry strategy and explain where he would simplify it for production.", created_at: "2026-08-14T19:05:00Z" },
+      { author: "Maya Chen", role: "CEO", text: "I want to understand how he balances a demanding team schedule with shipping. Look for a specific system or habit, not a general answer.", created_at: "2026-08-15T17:40:00Z" }
+    ],
     communications: [
       {
         event_id: "evt_201",
@@ -142,7 +194,8 @@ const demoCandidates = [
         event_at: "2026-07-23T17:00:00Z"
       }
     ],
-    resume_text: "Computer science student with 2 years of project experience using TypeScript, React, Python, SQL, REST APIs, testing, and Git."
+    resume_file_name: "marcus-rivera-resume.txt",
+    resume_text: "MARCUS RIVERA\nCOMPUTER SCIENCE STUDENT\nAustin, TX | marcus.rivera@example.com\n\n2 years of project experience using TypeScript, React, Python, SQL, REST APIs, testing, and Git. NCAA soccer student-athlete and team captain."
   },
   {
     candidate_id: "cand_103",
@@ -155,15 +208,77 @@ const demoCandidates = [
     skills: ["Growth", "Experimentation", "SQL", "Lifecycle", "Content"],
     industries: ["SaaS", "Healthcare"],
     stage: "Review",
-    notes: ["Good analytics background for growth role."],
+    role_id: "mts-stack-engineer-intern-cohort",
+    owner: "Sam Patel",
+    next_action: "Send application status update",
+    due_date: "2026-08-14",
+    stage_entered_at: "2026-08-10T17:00:00Z",
+    source: "University event",
+    exit_reason: "",
+    notes: [{ author: "Lena Ortiz", role: "COO", text: "Interesting analytics background, but the role fit is unclear. Ask what is motivating the engineering pivot and which technical work she owned directly.", created_at: "2026-08-12T20:15:00Z" }],
     communications: [],
-    resume_text: "Growth Marketing Lead with 6 years of experimentation, SQL, lifecycle programs, B2B SaaS, healthcare, and content strategy experience."
+    resume_file_name: "elena-brooks-resume.txt",
+    resume_text: "ELENA BROOKS\nGROWTH MARKETING LEAD\nBrooklyn, NY | elena.brooks@example.com\n\n6 years of experimentation, SQL, lifecycle programs, B2B SaaS, healthcare, and content strategy experience."
+  },
+  {
+    candidate_id: "cand_104", name: "Talia Okafor", email: "talia.okafor@example.com", phone: "+1-555-0166", location: "Oakland, CA",
+    current_title: "Software Engineering Student", total_years_experience: 2, skills: ["JavaScript", "React", "SQL", "API integration"], industries: ["Education"],
+    stage: "Offer", role_id: "mts-stack-engineer-intern-cohort", owner: "Sam Patel", next_action: "Confirm onboarding handoff", due_date: "2026-08-18", stage_entered_at: "2026-08-16T17:00:00Z", source: "Employee referral", exit_reason: "", retention_status: "Retain until Feb 17, 2027",
+    background_tags: ["Club athlete", "Rowing"],
+    notes: [{ author: "Theo Brooks", role: "CTO", text: "Strong evidence of finishing. In the final conversation, ask what she would monitor after launch and what she would change with another week.", created_at: "2026-08-15T18:00:00Z" }], communications: [{ event_id: "evt_401", type: "email", direction: "outbound", status: "sent (simulated)", subject: "Welcome to the intern cohort", body_preview: "Offer-stage message reviewed and marked sent for this browser-only demo.", owner: "Sam Patel", event_at: "2026-08-16T18:00:00Z" }],
+    scorecards: [
+      { interviewer: "Avery Kim", submitted: true, recommendation: "advance", responses: [{ competency: "Structured problem solving", rating: 4, evidence: "Used a clear hypothesis-and-test approach in the project walkthrough." }] },
+      { interviewer: "Noah Williams", submitted: true, recommendation: "advance", responses: [{ competency: "Collaborative learning", rating: 4, evidence: "Gave a specific example of incorporating code review feedback." }] }
+    ],
+    decision: { status: "Advance", owner: "Morgan Davis", rationale: "Both interviewers documented job-related evidence; hiring manager approved the offer." },
+    onboarding: { owner: "Jamie Torres", start_date: "2026-09-08", equipment: "Laptop and security key", documents: "Intern agreement and payroll forms", tasks: ["Send welcome guide", "Schedule orientation", "Assign engineering buddy", "Plan first-week project kickoff"] },
+    assistant: { summary: "Talia presents project evidence in JavaScript, React, SQL, and API integration.", evidence: ["Résumé lists JavaScript, React, SQL, and API integration"], questions: ["How did you validate the API behavior?"] },
+    resume_file_name: "talia-okafor-resume.txt",
+    resume_text: "TALIA OKAFOR\nSOFTWARE ENGINEERING STUDENT\nOakland, CA | talia.okafor@example.com\n\nCompleted projects using JavaScript, React, SQL, and API integration. Competitive club rower and novice-team mentor.", created_at: "2026-08-08T17:00:00Z", updated_at: "2026-08-16T18:00:00Z"
+  },
+  {
+    candidate_id: "cand_105", name: "Devon Shah", email: "devon.shah@example.com", phone: "+1-555-0127", location: "Chicago, IL",
+    current_title: "Director of Strategic Finance", total_years_experience: 11, skills: ["Financial planning", "Fundraising", "B2B SaaS", "Accounting"], industries: ["SaaS"],
+    stage: "Interview", role_id: "chief-financial-officer", owner: "Jordan Lee", next_action: "Probe leadership scale and controls", due_date: "2026-08-21", stage_entered_at: "2026-08-17T16:00:00Z", source: "Executive search", exit_reason: "",
+    notes: [{ author: "Maya Chen", role: "CEO", text: "Excellent strategic finance depth. Please test whether Devon is ready to own accounting and controls, not only FP&A and fundraising.", created_at: "2026-08-17T19:30:00Z" }], communications: [],
+    resume_file_name: "devon-shah-resume.txt", resume_text: "DEVON SHAH\nDIRECTOR OF STRATEGIC FINANCE\nChicago, IL | devon.shah@example.com\n\n11 years across SaaS financial planning, fundraising, accounting partnership, board materials, and operating reviews."
+  },
+  {
+    candidate_id: "cand_106", name: "Jordan Ellis", email: "jordan.ellis@example.com", phone: "+1-555-0193", location: "Berkeley, CA",
+    current_title: "Computer Science & Design Student", total_years_experience: 1, skills: ["TypeScript", "React", "Design systems", "API integration"], industries: ["Consumer software"],
+    stage: "Review", role_id: "mts-stack-engineer-intern-cohort", owner: "Sam Patel", next_action: "Review portfolio project", due_date: "2026-08-20", stage_entered_at: "2026-08-17T17:00:00Z", source: "University event", exit_reason: "",
+    background_tags: ["Student athlete", "Varsity swimming"],
+    notes: [{ author: "Theo Brooks", role: "CTO", text: "The accessibility work stands out. Ask Jordan to walk through one design-system decision and how they measured whether it helped users.", created_at: "2026-08-17T21:10:00Z" }], communications: [],
+    resume_file_name: "jordan-ellis-resume.txt", resume_text: "JORDAN ELLIS\nCOMPUTER SCIENCE & DESIGN STUDENT\nBerkeley, CA | jordan.ellis@example.com\n\nBuilt accessible React and TypeScript interfaces, a small design system, and REST API integrations. Varsity swimming student-athlete."
+  },
+  {
+    candidate_id: "cand_107", name: "Nia Wallace", email: "nia.wallace@example.com", phone: "+1-555-0175", location: "Atlanta, GA",
+    current_title: "Backend Engineering Intern", total_years_experience: 2, skills: ["Python", "SQL", "API integration", "AWS"], industries: ["Fintech"],
+    stage: "Shortlist", role_id: "mts-stack-engineer-intern-cohort", owner: "Sam Patel", next_action: "Schedule technical conversation", due_date: "2026-08-22", stage_entered_at: "2026-08-18T16:00:00Z", source: "Referral", exit_reason: "",
+    notes: [{ author: "Lena Ortiz", role: "COO", text: "Strong backend fundamentals and clear ownership. Please ask how she recovered when the internship project slipped behind schedule.", created_at: "2026-08-18T17:15:00Z" }], communications: [],
+    resume_file_name: "nia-wallace-resume.txt", resume_text: "NIA WALLACE\nBACKEND ENGINEERING INTERN\nAtlanta, GA | nia.wallace@example.com\n\n2 years of internship and project work with Python, SQL, REST APIs, AWS, testing, and fintech systems."
+  },
+  {
+    candidate_id: "cand_108", name: "Owen Park", email: "owen.park@example.com", phone: "+1-555-0154", location: "Seattle, WA",
+    current_title: "Finance & Operations VP", total_years_experience: 15, skills: ["Financial planning", "Accounting", "Team management", "Fundraising"], industries: ["SaaS", "Healthcare"],
+    stage: "New", role_id: "chief-financial-officer", owner: "Jordan Lee", next_action: "Complete initial review", due_date: "2026-08-22", stage_entered_at: "2026-08-18T17:00:00Z", source: "Careers site", exit_reason: "",
+    background_tags: ["Former professional athlete", "Baseball"],
+    notes: [{ author: "Maya Chen", role: "CEO", text: "Broad operator profile. I want to understand why now, and whether Owen can translate experience from a larger organization into our current stage.", created_at: "2026-08-18T18:05:00Z" }], communications: [],
+    resume_file_name: "owen-park-resume.txt", resume_text: "OWEN PARK\nFINANCE & OPERATIONS VP\nSeattle, WA | owen.park@example.com\n\n15 years in financial planning, accounting, fundraising, healthcare SaaS, and team management. Former professional baseball player."
   }
 ];
 
 let selectedCandidateId = null;
 let activeMetric = null;
 let pendingStageMove = null;
+let activeOperationsView = "people";
+const AUDIT_KEY = "signal-ats-sanitized-audit-v1";
+
+function logAudit(action, candidate, detail) {
+  const events = JSON.parse(localStorage.getItem(AUDIT_KEY) || "[]");
+  events.unshift({ action, candidate: candidate?.name || "Workspace", detail, actor: "Demo recruiter", at: new Date().toISOString() });
+  localStorage.setItem(AUDIT_KEY, JSON.stringify(events.slice(0, 40)));
+}
 
 function getCandidates() {
   const stored = localStorage.getItem(STORAGE_KEY);
@@ -181,6 +296,33 @@ function getCandidates() {
 
 function saveCandidates(candidates) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(candidates));
+}
+
+function getActiveFounder() {
+  const founderId = localStorage.getItem(ACTIVE_FOUNDER_KEY) || founders[0].id;
+  return founders.find((founder) => founder.id === founderId) || founders[0];
+}
+
+function normalizeNote(note) {
+  if (typeof note === "string") return { author: "Demo recruiter", role: "Recruiting", text: note, created_at: "" };
+  return note || { author: "Unknown", role: "Team", text: "", created_at: "" };
+}
+
+function renderBackgroundTags(candidate) {
+  const tags = candidate.background_tags || [];
+  if (!tags.length) return "";
+  return `<span class="background-tags" aria-label="Self-reported background">${tags.map((tag) => `<span class="background-tag">${escapeHtml(tag)}</span>`).join("")}</span>`;
+}
+
+function renderFounderNotes(candidate) {
+  const notes = (candidate.notes || []).map(normalizeNote);
+  if (!notes.length) return `<p class="detail-empty">No founder notes yet.</p>`;
+  return `<div class="founder-notes">${notes.map((note) => `
+    <article class="founder-note">
+      <div class="founder-note-heading"><span class="founder-avatar" aria-hidden="true">${escapeHtml(note.author.split(/\s+/).map((part) => part[0]).join("").slice(0, 2))}</span><span><strong>${escapeHtml(note.author)}</strong><small>${escapeHtml(note.role)}${note.created_at ? ` · ${escapeHtml(formatDate(note.created_at))}` : ""}</small></span></div>
+      <p>${escapeHtml(note.text)}</p>
+    </article>
+  `).join("")}</div>`;
 }
 
 function normalize(value) {
@@ -298,6 +440,7 @@ function candidateText(candidate) {
     candidate.location,
     candidate.skills?.join(" "),
     candidate.industries?.join(" "),
+    candidate.background_tags?.join(" "),
     candidate.resume_text
   ].join(" ");
 }
@@ -313,6 +456,11 @@ function scoreCandidate(candidate, query, roleId) {
   const base = allTokens.length ? uniqueMatches.length / allTokens.length : 0.48;
   const experienceBoost = Math.min(Number(candidate.total_years_experience || 0) / 20, 0.25);
   return Math.min(0.99, base * 0.74 + experienceBoost + 0.08);
+}
+
+function selectedMatch(candidate, roleId) {
+  const role = roles.find((item) => item.id === roleId) || roles.find((item) => item.id === candidate.role_id) || roles[0];
+  return { role, ...calculateRoleMatch(candidate, role) };
 }
 
 function matchReasons(candidate, query, roleId) {
@@ -373,17 +521,19 @@ function filteredCandidates() {
   const stage = document.querySelector("#stage-filter")?.value || "all";
   const minYears = Number(document.querySelector("#years-filter")?.value || 0);
   const roleId = document.querySelector("#role-filter-id")?.value || "all";
+  const background = document.querySelector("#background-filter")?.value || "all";
 
   return getCandidates()
     .filter((candidate) => stage === "all" || candidate.stage === stage)
     .filter((candidate) => Number(candidate.total_years_experience || 0) >= minYears)
+    .filter((candidate) => background === "all" || (candidate.background_tags || []).length > 0)
     .filter((candidate) => candidateMatchesRole(candidate, roleId))
     .map((candidate) => ({
       ...candidate,
       match_score: scoreCandidate(candidate, query, roleId),
       match_reasons: matchReasons(candidate, query, roleId)
     }))
-    .filter((candidate) => !query || candidate.match_score > 0.18 || normalize(candidateText(candidate)).includes(normalize(query)))
+    .filter((candidate) => !query || tokens(query).every((token) => normalize(candidateText(candidate)).includes(token)))
     .sort((a, b) => b.match_score - a.match_score);
 }
 
@@ -633,9 +783,11 @@ function renderCandidates() {
           <h3>${escapeHtml(candidate.name)}</h3>
           <p>${escapeHtml(candidate.current_title || "No title")} | ${escapeHtml(candidate.location || "No location")}</p>
         </span>
-        <span class="score">${Math.round(candidate.match_score * 100)}%</span>
+        <span class="evidence-count">${roleKeywordHits(candidate, document.querySelector("#role-filter-id")?.value || "all").length || (candidate.skills || []).length} evidence signals</span>
       </span>
       <span class="stage-pill">${escapeHtml(candidate.stage || "New")}</span>
+      ${renderBackgroundTags(candidate)}
+      <span class="ownership-line"><strong>${escapeHtml(candidate.owner || "Unassigned")}</strong> · ${escapeHtml(candidate.next_action || "Set next action")} · ${escapeHtml(candidate.due_date || "No due date")}</span>
       ${renderCandidateRoleEvidence(candidate)}
       <span class="chips">${(candidate.skills || []).slice(0, 5).map((skill) => `<span class="chip">${escapeHtml(skill)}</span>`).join("")}</span>
     </button>
@@ -652,8 +804,10 @@ function renderDetail(candidateId) {
   const candidate = getCandidates().find((item) => item.candidate_id === candidateId);
   if (!candidate) return;
   if (selectedCandidateId && selectedCandidateId !== candidateId) pendingStageMove = null;
-  const score = scoreCandidate(candidate, query, roleId);
   const reasons = matchReasons(candidate, query, roleId);
+  const match = selectedMatch(candidate, roleId);
+  const role = roles.find((item) => item.id === candidate.role_id) || roles.find((item) => item.id === roleId);
+  const activeFounder = getActiveFounder();
   selectedCandidateId = candidateId;
   name.textContent = candidate.name;
   if (status) {
@@ -662,27 +816,44 @@ function renderDetail(candidateId) {
   }
   detail.className = "detail-body";
   detail.innerHTML = `
+    <section class="profile-resume-bar">
+      <div><p class="eyebrow">Candidate file</p><strong>${escapeHtml(candidate.resume_file_name || `${candidate.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-resume.txt`)}</strong><span>Sanitized résumé · browser-local</span></div>
+      <button class="primary-action" type="button" data-action="download-resume">Download résumé</button>
+    </section>
+    ${renderBackgroundTags(candidate)}
+    ${(candidate.background_tags || []).length ? `<p class="background-disclaimer">Self-reported background context. This tag is not included in match scoring and should be validated through job-related evidence.</p>` : ""}
     <dl>
       <dt>Title</dt><dd>${escapeHtml(candidate.current_title || "Not listed")}</dd>
       <dt>Email</dt><dd>${escapeHtml(candidate.email || "Not listed")}</dd>
       <dt>Location</dt><dd>${escapeHtml(candidate.location || "Not listed")}</dd>
       <dt>Experience</dt><dd>${Number(candidate.total_years_experience || 0)} years</dd>
       <dt>Skills</dt><dd>${escapeHtml((candidate.skills || []).join(", ") || "Not listed")}</dd>
-      <dt>Match</dt><dd>${Math.round(score * 100)}%</dd>
+      <dt>Owner</dt><dd>${escapeHtml(candidate.owner || "Unassigned")}</dd>
+      <dt>Next action</dt><dd>${escapeHtml(candidate.next_action || "Not set")}</dd>
+      <dt>Due</dt><dd>${escapeHtml(candidate.due_date || "Not set")}</dd>
+      <dt>Retention</dt><dd>${escapeHtml(candidate.retention_status || "Policy not assigned")}</dd>
     </dl>
-    <div>
-      <h3>Match evidence</h3>
-      <ul class="notes-list">${reasons.map((reason) => `<li>${escapeHtml(reason)}</li>`).join("") || "<li>No evidence yet. Add resume text or search terms.</li>"}</ul>
+    <section class="match-breakdown" data-tour-target="matching">
+      <div class="section-heading split"><div><p class="eyebrow">Explainable matching</p><h3>${match.percent}% match for ${escapeHtml(match.role.title)}</h3></div><span class="match-percent">${match.percent}%</span></div>
+      <p class="section-copy">Deterministic comparison for human review. ${escapeHtml(match.reason)}</p>
+      <div class="match-columns"><div><strong>Matched skills and signals</strong><ul class="notes-list">${match.matched.map((item) => `<li>${escapeHtml(formatMatchKeyword(item))}</li>`).join("") || "<li>No role signals found yet.</li>"}</ul></div><div><strong>Missing role signals</strong><ul class="notes-list">${match.missing.map((item) => `<li>${escapeHtml(formatMatchKeyword(item))}</li>`).join("") || "<li>No missing signals.</li>"}</ul></div></div>
+      <p class="experience-evidence"><strong>Relevant experience:</strong> ${match.experienceYears} years recorded. ${(reasons || []).map(escapeHtml).join(" · ")}</p>
+      <details><summary>How this percentage works</summary><p>Role-signal coverage contributes 80 points. Recorded experience contributes up to 20 points at two points per year. It does not assess people, potential, or hiring quality.</p></details>
+    </section>
+    ${renderAssistant(candidate)}
+    ${renderScorecards(candidate, role)}
+    ${renderDecision(candidate)}
+    ${renderCommunicationComposer(candidate, role)}
+    ${renderOnboarding(candidate)}
+    <div data-tour-target="context">
+      <div class="section-heading split"><div><p class="eyebrow">Founder context</p><h3>Notes & interview prompts</h3></div><span class="active-author">Adding as ${escapeHtml(activeFounder.name)} · ${escapeHtml(activeFounder.role)}</span></div>
+      ${renderFounderNotes(candidate)}
     </div>
-    <div>
-      <h3>Notes</h3>
-      <ul class="notes-list">${(candidate.notes || []).map((note) => `<li>${escapeHtml(note)}</li>`).join("") || "<li>No notes yet.</li>"}</ul>
-    </div>
-    <div>
+    <div data-tour-target="history">
       <h3>Communication timeline</h3>
       <ul class="timeline-list">${renderCommunications(candidate)}</ul>
     </div>
-    <label>Add note<textarea id="new-note" rows="3" placeholder="Interview screen, compensation notes, follow-up"></textarea></label>
+    <label>Add founder note or interview prompt<textarea id="new-note" rows="3" placeholder="Share your opinion, a question to press on, or context for the evaluator"></textarea></label>
     <label>Email or interview update<textarea id="new-communication" rows="3" placeholder="Candidate replied, interview scheduled, follow-up sent"></textarea></label>
     <label>Subject<input id="new-communication-subject" placeholder="Email subject or interview title"></label>
     <div class="detail-actions">
@@ -690,16 +861,210 @@ function renderDetail(candidateId) {
       <button class="ghost-action" type="button" data-action="inbound-email">Log inbound</button>
       <button class="ghost-action" type="button" data-action="outbound-email">Log outbound</button>
       <button class="ghost-action" type="button" data-action="interview">Log interview</button>
+      <button class="ghost-action" type="button" data-action="internal-update">Log internal update</button>
     </div>
-    <div class="stage-move-panel">
+    <div class="stage-move-panel" data-tour-target="stage">
       <h3>Move stage</h3>
       <div class="stage-action-row">
         ${renderStageMoveButtons(candidate)}
       </div>
       ${pendingStageMove?.candidateId === candidate.candidate_id ? `<p class="stage-confirmation">Click Confirm ${escapeHtml(pendingStageMove.stage)} to move this candidate.</p>` : ""}
     </div>
+    <details class="edit-candidate"><summary>Edit browser-local candidate</summary><div class="scorecard-form"><label>Name<input id="edit-name" value="${escapeHtml(candidate.name)}" required></label><label>Email<input id="edit-email" type="email" value="${escapeHtml(candidate.email || "")}"></label><label>Title<input id="edit-title" value="${escapeHtml(candidate.current_title || "")}"></label><label>Location<input id="edit-location" value="${escapeHtml(candidate.location || "")}"></label><label>Experience years<input id="edit-years" type="number" min="0" value="${Number(candidate.total_years_experience || 0)}"></label><label>Skills (comma separated)<input id="edit-skills" value="${escapeHtml((candidate.skills || []).join(", "))}"></label><label>Résumé text<textarea id="edit-resume" rows="5">${escapeHtml(candidate.resume_text || "")}</textarea></label><button class="primary-action" data-action="save-candidate">Save changes</button></div></details>
+    <div class="privacy-controls"><h3>Candidate data controls</h3><p class="section-copy">All actions affect this browser only.</p><div class="detail-actions"><button class="ghost-action" data-action="archive">Archive</button><button class="ghost-action danger" data-action="remove">Remove candidate</button></div></div>
   `;
   renderCandidates();
+}
+
+function daysInStage(candidate) {
+  const started = new Date(candidate.stage_entered_at || candidate.updated_at || candidate.created_at || Date.now());
+  return Math.max(0, Math.floor((Date.now() - started.getTime()) / 86400000));
+}
+
+function isOverdue(candidate) {
+  return candidate.due_date && new Date(`${candidate.due_date}T23:59:59`) < new Date();
+}
+
+function renderOperationsDashboard() {
+  const root = document.querySelector("#ops-dashboard");
+  if (!root) return;
+  const candidates = getCandidates();
+  const overdue = candidates.filter(isOverdue);
+  const stageCounts = ["New", "Review", "Shortlist", "Interview", "Offer"].map((stage) => `${stage} ${candidates.filter((item) => item.stage === stage).length}`).join(" · ");
+  const completed = candidates.flatMap((item) => item.scorecards || []).filter((item) => item.submitted).length;
+  const assigned = candidates.flatMap((item) => item.scorecards || []).length;
+  const sources = [...new Set(candidates.map((item) => item.source).filter(Boolean))].map((source) => `${source} ${candidates.filter((item) => item.source === source).length}`).join(" · ");
+  const offers = candidates.filter((item) => item.stage === "Offer");
+  const activeCandidates = candidates.filter((item) => !["Archived", "Hired"].includes(item.stage));
+  const submittedRate = assigned ? Math.round((completed / assigned) * 100) : 0;
+  const responseRate = candidates.length ? Math.round(((candidates.length - overdue.length) / candidates.length) * 100) : 0;
+  const acceptedOffers = offers.filter((item) => item.onboarding).length;
+  const offerRate = offers.length ? Math.round((acceptedOffers / offers.length) * 100) : 0;
+  const averageDaysInStage = activeCandidates.length
+    ? Math.round(activeCandidates.reduce((total, item) => total + daysInStage(item), 0) / activeCandidates.length)
+    : 0;
+  const sourceCount = new Set(candidates.map((item) => item.source).filter(Boolean)).size;
+  const exitCount = candidates.filter((item) => item.exit_reason).length;
+  const pipelineStages = ["New", "Review", "Shortlist", "Interview", "Offer"];
+  const pipeline = pipelineStages.map((stage) => ({
+    stage,
+    count: candidates.filter((item) => item.stage === stage).length
+  }));
+  const pipelineMax = Math.max(...pipeline.map((item) => item.count), 1);
+  const auditEvents = JSON.parse(localStorage.getItem(AUDIT_KEY) || "[]");
+  const ownedCandidates = candidates.filter((item) => item.owner && item.owner !== "Unassigned").length;
+  const retentionAssigned = candidates.filter((item) => item.retention_status).length;
+  root.innerHTML = `
+    <article class="attention-queue"><strong>${overdue.length} follow-up${overdue.length === 1 ? "" : "s"} need attention</strong><span>${overdue.map((item) => `${escapeHtml(item.name)} — ${daysInStage(item)} days in ${escapeHtml(item.stage)}`).join("<br>") || "Nothing overdue today."}</span></article>
+    <article class="hiring-metrics-tile" aria-labelledby="hiring-metrics-title">
+      <header class="hiring-metrics-header">
+        <div><p class="eyebrow">Business hiring metrics</p><h3 id="hiring-metrics-title">Hiring function snapshot</h3></div>
+        <button class="metrics-export" type="button" data-export-metrics>Export ${activeOperationsView === "people" ? "People Ops" : activeOperationsView === "finance" ? "Finance" : "Internal Audit"} CSV</button>
+      </header>
+      <div class="metrics-view-tabs" role="tablist" aria-label="Metric audience">
+        <button type="button" role="tab" data-operations-view="people" aria-selected="${activeOperationsView === "people"}">People Ops</button>
+        <button type="button" role="tab" data-operations-view="finance" aria-selected="${activeOperationsView === "finance"}">Finance</button>
+        <button type="button" role="tab" data-operations-view="audit" aria-selected="${activeOperationsView === "audit"}">Internal Audit</button>
+      </div>
+      <div class="metrics-view-panel" role="tabpanel" ${activeOperationsView === "people" ? "" : "hidden"}>
+      <dl class="hiring-kpi-grid">
+        <div><dt>Open roles</dt><dd>${roles.length}</dd><small>Across ${new Set(roles.map((role) => role.team)).size} teams</small></div>
+        <div><dt>Active pipeline</dt><dd>${activeCandidates.length}</dd><small>${stageCounts}</small></div>
+        <div><dt>Avg. days in stage</dt><dd>${averageDaysInStage}</dd><small>Active candidates</small></div>
+        <div><dt>Response target</dt><dd>${responseRate}%</dd><small>${candidates.length - overdue.length} of ${candidates.length} within ${RESPONSE_TARGET_DAYS} days</small></div>
+        <div><dt>Interview completion</dt><dd>${submittedRate}%</dd><small>${completed} of ${assigned} scorecards submitted</small></div>
+        <div><dt>Offer acceptance</dt><dd>${offerRate}%</dd><small>${acceptedOffers} accepted of ${offers.length} at offer stage</small></div>
+      </dl>
+      <section class="pipeline-metrics" aria-labelledby="pipeline-metrics-title">
+        <div class="metrics-subhead"><div><p class="eyebrow">Pipeline analytics</p><h4 id="pipeline-metrics-title">Point-in-time funnel</h4></div><span>${activeCandidates.length} active</span></div>
+        <ol class="pipeline-funnel">
+          ${pipeline.map((item) => `<li><span class="pipeline-stage"><strong>${item.count}</strong>${item.stage}</span><span class="pipeline-bar" aria-hidden="true"><i style="width:${Math.max((item.count / pipelineMax) * 100, item.count ? 8 : 0)}%"></i></span><small>${candidates.length ? Math.round((item.count / candidates.length) * 100) : 0}% of all records</small></li>`).join("")}
+        </ol>
+        <p class="funnel-definition">This is current pipeline inventory, not cohort conversion. True stage-to-stage conversion and time-to-hire require historical stage events and requisition open/close dates.</p>
+      </section>
+      <div class="hiring-metrics-detail">
+        <p><strong>Source mix</strong><span>${sources || "No source data"} · ${sourceCount} channel${sourceCount === 1 ? "" : "s"}</span></p>
+        <p><strong>Exits</strong><span>${exitCount ? candidates.filter((item) => item.exit_reason).map((item) => escapeHtml(item.exit_reason)).join(" · ") : "No recorded exits"}</span></p>
+      </div>
+      </div>
+      <div class="metrics-view-panel" role="tabpanel" ${activeOperationsView === "finance" ? "" : "hidden"}>
+      <section class="finance-readiness" aria-labelledby="finance-readiness-title">
+        <div class="metrics-subhead"><div><p class="eyebrow">Finance & accounting</p><h4 id="finance-readiness-title">Hiring-cost data readiness</h4></div><span>4 inputs needed</span></div>
+        <dl class="finance-summary">
+          <div><dt>Open requisitions</dt><dd>${roles.length}</dd></div>
+          <div><dt>Offer-stage candidates</dt><dd>${offers.length}</dd></div>
+          <div><dt>Accepted offers</dt><dd>${acceptedOffers}</dd></div>
+          <div><dt>Active candidate load</dt><dd>${activeCandidates.length}</dd></div>
+        </dl>
+        <dl>
+          <div><dt>Approved headcount plan</dt><dd>Not connected</dd></div>
+          <div><dt>Compensation budget</dt><dd>Not connected</dd></div>
+          <div><dt>Agency & recruiting spend</dt><dd>Not connected</dd></div>
+          <div><dt>New-hire payroll start</dt><dd>Not connected</dd></div>
+        </dl>
+        <p>Once connected, finance can reconcile planned vs. filled headcount, committed compensation, recruiting spend, cost per hire, and forecast variance by role, team, and period.</p>
+      </section>
+      </div>
+      <div class="metrics-view-panel" role="tabpanel" ${activeOperationsView === "audit" ? "" : "hidden"}>
+        <section class="audit-metrics" aria-labelledby="audit-metrics-title">
+          <div class="metrics-subhead"><div><p class="eyebrow">Controls & traceability</p><h4 id="audit-metrics-title">Hiring control coverage</h4></div><span>Current demo</span></div>
+          <dl class="hiring-kpi-grid audit-kpis">
+            <div><dt>Owner assigned</dt><dd>${candidates.length ? Math.round((ownedCandidates / candidates.length) * 100) : 0}%</dd><small>${ownedCandidates} of ${candidates.length} records</small></div>
+            <div><dt>Retention status</dt><dd>${candidates.length ? Math.round((retentionAssigned / candidates.length) * 100) : 0}%</dd><small>${retentionAssigned} of ${candidates.length} records</small></div>
+            <div><dt>Scorecard evidence</dt><dd>${submittedRate}%</dd><small>${completed} of ${assigned} submitted</small></div>
+            <div><dt>Overdue actions</dt><dd>${overdue.length}</dd><small>Against ${RESPONSE_TARGET_DAYS}-day demo target</small></div>
+            <div><dt>Audit events</dt><dd>${auditEvents.length}</dd><small>Browser-local activity records</small></div>
+            <div><dt>Exit reasons</dt><dd>${exitCount}</dd><small>Documented candidate exits</small></div>
+          </dl>
+          <div class="control-gaps"><strong>Controls requiring connected systems</strong><span>Requisition approval · compensation exceptions · background checks · eligibility documents · segregation of duties · payroll reconciliation</span></div>
+        </section>
+      </div>
+      <p class="metrics-coverage-note">Calculated from fictional browser-local records. Protected-trait data is intentionally excluded. Quality of hire should only be added with governed, job-related outcome definitions and appropriate access controls.</p>
+      <p class="sr-only" role="status" data-export-status></p>
+    </article>`;
+}
+
+function metricsExportRows(view) {
+  const candidates = getCandidates();
+  const overdue = candidates.filter(isOverdue);
+  const active = candidates.filter((item) => !["Archived", "Hired"].includes(item.stage));
+  const offers = candidates.filter((item) => item.stage === "Offer");
+  const accepted = offers.filter((item) => item.onboarding).length;
+  const cards = candidates.flatMap((item) => item.scorecards || []);
+  const completed = cards.filter((item) => item.submitted).length;
+  const row = (metric, value, definition, source = "Signal ATS demo", status = "Available") => ({ metric, value, definition, source, status });
+  if (view === "finance") return [
+    row("Open requisitions", roles.length, "Open roles in the recruiting system"),
+    row("Offer-stage candidates", offers.length, "Candidates currently in Offer"),
+    row("Accepted offers", accepted, "Offer-stage candidates with an onboarding handoff"),
+    row("Active candidate load", active.length, "Candidates not Archived or Hired"),
+    row("Approved headcount plan", "", "Approved positions by team, cost center, level, and period", "Finance planning system", "Not connected"),
+    row("Compensation budget", "", "Approved compensation range and fully loaded cost", "Finance / compensation system", "Not connected"),
+    row("Recruiting spend", "", "Agency, advertising, travel, relocation, and technology spend", "General ledger / AP", "Not connected"),
+    row("Payroll start", "", "Actual employee start date and payroll activation", "HRIS / payroll", "Not connected")
+  ];
+  if (view === "audit") return [
+    row("Owner assignment coverage", `${candidates.length ? Math.round(candidates.filter((item) => item.owner && item.owner !== "Unassigned").length / candidates.length * 100) : 0}%`, "Candidate records with an assigned owner"),
+    row("Retention-status coverage", `${candidates.length ? Math.round(candidates.filter((item) => item.retention_status).length / candidates.length * 100) : 0}%`, "Candidate records with a retention status"),
+    row("Scorecard submission", `${cards.length ? Math.round(completed / cards.length * 100) : 0}%`, "Submitted assigned scorecards"),
+    row("Overdue actions", overdue.length, `Actions outside the ${RESPONSE_TARGET_DAYS}-day demo target`),
+    row("Audit events", JSON.parse(localStorage.getItem(AUDIT_KEY) || "[]").length, "Browser-local recorded workspace events"),
+    row("Requisition and compensation approvals", "", "Approval and exception evidence", "Finance / HRIS approval workflow", "Not connected")
+  ];
+  return [
+    row("Open roles", roles.length, "Roles currently open"),
+    row("Active pipeline", active.length, "Candidates not Archived or Hired"),
+    ...["New", "Review", "Shortlist", "Interview", "Offer"].map((stage) => row(`${stage} candidates`, candidates.filter((item) => item.stage === stage).length, "Point-in-time pipeline inventory")),
+    row("Average days in stage", active.length ? Math.round(active.reduce((sum, item) => sum + daysInStage(item), 0) / active.length) : 0, "Average across active candidates"),
+    row("Offer acceptance", `${offers.length ? Math.round(accepted / offers.length * 100) : 0}%`, "Accepted offers divided by offer-stage candidates"),
+    row("Historical funnel conversion", "", "Cohort stage-to-stage conversion", "Stage event history", "Not connected")
+  ];
+}
+
+function exportOperationsMetrics() {
+  const rows = metricsExportRows(activeOperationsView);
+  const columns = ["metric", "value", "definition", "source", "status"];
+  const quote = (value) => `"${String(value ?? "").replaceAll('"', '""')}"`;
+  const csv = [columns.join(","), ...rows.map((row) => columns.map((column) => quote(row[column])).join(","))].join("\n");
+  const blob = new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `signal-ats-${activeOperationsView}-metrics.csv`;
+  link.click();
+  URL.revokeObjectURL(url);
+  const status = document.querySelector("[data-export-status]");
+  if (status) status.textContent = `${activeOperationsView} metrics CSV exported.`;
+}
+
+function renderAssistant(candidate) {
+  const assistant = candidate.assistant || { summary: `Résumé lists ${(candidate.skills || []).join(", ") || "no structured skills yet"}.`, evidence: (candidate.skills || []).map((skill) => `Résumé contains ${skill}`), questions: ["What job-related example best demonstrates this skill?"] };
+  return `<section class="workflow-section assistant-panel"><div class="section-heading split"><div><p class="eyebrow">Recruiter assistant</p><h3>Editable, evidence-linked assistance</h3></div><span class="assist-label">Assistance—not objective truth</span></div><label>Résumé summary<textarea id="assistant-summary" rows="3">${escapeHtml(assistant.summary)}</textarea></label><strong>Supporting evidence</strong><ul class="notes-list">${assistant.evidence.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul><strong>Suggested questions</strong><ul class="notes-list">${assistant.questions.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul><p class="guardrail-copy">Does not infer protected traits, personality, “culture fit,” or potential. Cannot move a candidate or make a decision.</p><button class="ghost-action" data-action="save-assistance">Save edited summary</button></section>`;
+}
+
+function renderScorecards(candidate, role) {
+  const cards = candidate.scorecards || [];
+  const competencies = candidate.role_competencies || role?.competencies || [];
+  const submitted = cards.filter((card) => card.submitted);
+  const locked = cards.some((card) => !card.submitted);
+  return `<section class="workflow-section"><div class="section-heading"><p class="eyebrow">Structured interviews</p><h3>${escapeHtml(role?.title || "Role")} scorecards</h3></div><div class="competency-list">${competencies.map((item) => `<div><strong>${escapeHtml(item.name)}</strong><span>${escapeHtml(item.question)}</span></div>`).join("") || "<p>No competencies configured.</p>"}</div><details><summary>Add a role competency and question</summary><div class="scorecard-form"><label>Competency<input id="new-competency" placeholder="e.g. Debugging approach"></label><label>Interview question<input id="new-question" placeholder="Ask for a specific example"></label><button class="ghost-action" data-action="add-competency">Add competency</button></div></details><p class="independence-note">${locked ? "Independent feedback is locked: interviewers cannot see colleagues’ responses until they submit their own." : "All assigned feedback is submitted; the hiring manager can review individual evidence below."}</p>${submitted.map((card) => `<details><summary>${escapeHtml(card.interviewer)} · ${escapeHtml(card.recommendation)}</summary>${card.responses.map((response) => `<div class="score-response"><strong>${escapeHtml(response.competency)} · ${response.rating}/4</strong><p>${escapeHtml(response.evidence)}</p></div>`).join("")}</details>`).join("") || "<p>No scorecards submitted.</p>"}<div class="scorecard-form"><label>Competency<select id="scorecard-competency">${competencies.map((item) => `<option>${escapeHtml(item.name)}</option>`).join("")}</select></label><label>Rating (behavioral evidence scale)<select id="scorecard-rating"><option value="1">1 · insufficient evidence</option><option value="2">2 · partial evidence</option><option value="3" selected>3 · clear evidence</option><option value="4">4 · strong evidence</option></select></label><label>Recommendation<select id="scorecard-recommendation"><option>advance</option><option>hold</option><option>decline</option></select></label><label>Evidence-based note<textarea id="scorecard-evidence" rows="2" placeholder="Describe observed, job-related evidence"></textarea></label><button class="ghost-action" data-action="submit-scorecard">Submit independent scorecard</button></div></section>`;
+}
+
+function renderDecision(candidate) {
+  const decision = candidate.decision || { status: "Pending", owner: "Hiring manager", rationale: "Awaiting structured feedback." };
+  return `<section class="workflow-section decision-panel"><p class="eyebrow">Human decision</p><h3>${escapeHtml(decision.status)} · owned by ${escapeHtml(decision.owner)}</h3><p>${escapeHtml(decision.rationale)}</p><p class="guardrail-copy">No universal candidate score and no automated advance or rejection.</p></section>`;
+}
+
+function renderCommunicationComposer(candidate, role) {
+  const templates = { confirmation: "Application confirmation", scheduling: "Interview scheduling", status: "Status update", rejection: "Rejection", offer: "Offer-stage communication" };
+  return `<section class="workflow-section"><p class="eyebrow">Candidate communication</p><h3>Review before anything is sent</h3><label>Template<select id="message-template">${Object.entries(templates).map(([value, label]) => `<option value="${value}">${label}</option>`).join("")}</select></label><label>Editable draft<textarea id="message-draft" rows="4">Hi ${escapeHtml(candidate.name.split(" ")[0])},\n\nHere is an update about the ${escapeHtml(role?.title || "role")} process. A recruiter will review this message before it is marked approved or sent.\n\nBest,\nRecruiting</textarea></label><div class="detail-actions"><button class="ghost-action" data-action="save-draft">Save draft</button><button class="primary-action" data-action="approve-message">Approve & log</button></div><p class="section-copy">This prototype simulates status only; it sends no email.</p></section>`;
+}
+
+function renderOnboarding(candidate) {
+  if (!candidate.onboarding && candidate.stage !== "Offer") return "";
+  const handoff = candidate.onboarding;
+  if (!handoff) return `<section class="workflow-section onboarding-panel"><p class="eyebrow">Recruiting → onboarding</p><h3>Create a minimum-necessary handoff</h3><p>Only start logistics move forward. Interview notes and résumé data stay out.</p><button class="primary-action" data-action="create-handoff">Create onboarding handoff</button></section>`;
+  return `<section class="workflow-section onboarding-panel"><p class="eyebrow">Onboarding handoff</p><h3>${escapeHtml(handoff.owner)} owns the ${escapeHtml(handoff.start_date)} start</h3><dl><dt>Equipment</dt><dd>${escapeHtml(handoff.equipment)}</dd><dt>Required documents</dt><dd>${escapeHtml(handoff.documents)}</dd></dl><ol class="checklist">${handoff.tasks.map((task) => `<li>${escapeHtml(task)}</li>`).join("")}</ol><p class="guardrail-copy">Excluded: résumé, interview notes, scorecards, and unnecessary applicant information.</p></section>`;
 }
 
 function renderStageMoveButtons(candidate) {
@@ -719,7 +1084,7 @@ function renderCommunications(candidate) {
   }
   return communications.map((event) => `
     <li>
-      <span class="timeline-meta">${escapeHtml(event.type)} | ${escapeHtml(event.direction)} | ${formatDate(event.event_at)}</span>
+      <span class="timeline-meta">${escapeHtml(event.status || event.type)} | ${escapeHtml(event.direction)} | ${formatDate(event.event_at)}</span>
       <strong>${escapeHtml(event.subject || "Untitled")}</strong>
       <span>${escapeHtml(event.body_preview || "")}</span>
     </li>
@@ -735,7 +1100,7 @@ function handleCandidateSubmit(event) {
   const status = document.querySelector("#resume-parse-status");
   if (!resumeText) {
     if (status) {
-      status.textContent = "Add resume text first. For PDF or DOCX files, open the dashboard from http://localhost:4174/index.html and keep python3 server.py running.";
+      status.textContent = "Paste fictional résumé text or choose a supported TXT, Markdown, or CSV file.";
       status.classList.add("error");
     }
     return;
@@ -752,6 +1117,12 @@ function handleCandidateSubmit(event) {
     skills: parsed.skills,
     industries: [],
     stage: "New",
+    owner: "Recruiting queue",
+    next_action: "Review application",
+    due_date: new Date(Date.now() + RESPONSE_TARGET_DAYS * 86400000).toISOString().slice(0, 10),
+    stage_entered_at: new Date().toISOString(),
+    source: "Resume intake",
+    retention_status: "Demo retention policy pending",
     notes: ["Profile generated from resume intake."],
     communications: [],
     resume_text: resumeText,
@@ -762,6 +1133,7 @@ function handleCandidateSubmit(event) {
   const candidates = getCandidates();
   candidates.unshift(candidate);
   saveCandidates(candidates);
+  logAudit("candidate created", candidate, "Added through browser-local résumé intake");
   form.reset();
   selectedCandidateId = candidate.candidate_id;
   renderMetrics();
@@ -778,32 +1150,12 @@ async function handleResumeFile(event) {
   const textarea = event.target.form?.querySelector("textarea[name='resume']");
   const status = document.querySelector("#resume-parse-status");
   if (!file || !textarea) return;
-  const isTextLike = /\.(txt|md|csv|json)$/i.test(file.name) || file.type.startsWith("text/");
+  const isTextLike = /\.(txt|md|markdown|csv)$/i.test(file.name) || file.type.startsWith("text/");
   if (!isTextLike) {
-    if (window.location.protocol === "file:") {
-      textarea.value = "";
-      textarea.placeholder = "PDF and DOCX scanning needs the local server. Open http://localhost:4174/index.html, then choose this resume again.";
-      if (status) {
-        status.textContent = "PDF and DOCX scanning needs the local server. Open http://localhost:4174/index.html, then choose this resume again.";
-        status.classList.add("error");
-      }
-      return;
-    }
-    if (status) status.textContent = `Scanning ${file.name}...`;
-    const parsed = await parseResumeFile(file);
-    if (parsed.ok) {
-      textarea.value = parsed.text;
-      if (status) {
-        status.textContent = `Scanned ${file.name}. Ready to add candidate.`;
-        status.classList.remove("error");
-      }
-    } else {
-      textarea.value = "";
-      textarea.placeholder = parsed.error || `Could not scan ${file.name}. Paste resume text here.`;
-      if (status) {
-        status.textContent = parsed.error || "Could not scan this resume.";
-        status.classList.add("error");
-      }
+    textarea.value = "";
+    if (status) {
+      status.textContent = "This browser-local demo supports TXT, Markdown, and CSV. For DOCX, PDF, image, or other files, copy the text and paste it here; the file was not uploaded.";
+      status.classList.add("error");
     }
     return;
   }
@@ -816,60 +1168,6 @@ async function handleResumeFile(event) {
     }
   });
   reader.readAsText(file);
-}
-
-async function parseResumeFile(file) {
-  const body = new FormData();
-  body.append("resume", file);
-  try {
-    const response = await fetch("/api/parse-resume", { method: "POST", body });
-    const payload = await response.json();
-    if (!response.ok || !payload.ok) {
-      return { ok: false, error: payload.error || "Could not scan this resume." };
-    }
-    return { ok: true, text: payload.text };
-  } catch {
-    return {
-      ok: false,
-      error: "Resume scanning needs the local Signal ATS demo server. Open the admin dashboard from http://localhost:4174/admin.html and keep python3 server.py running, then try again."
-    };
-  }
-}
-
-async function handleAdminLogin(event) {
-  event.preventDefault();
-  const form = event.currentTarget;
-  const status = document.querySelector("#admin-login-status");
-  const body = new URLSearchParams(new FormData(form));
-  if (status) {
-    status.textContent = "Checking credentials...";
-    status.classList.remove("error");
-  }
-  try {
-    const response = await fetch("/api/admin-login", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body
-    });
-    const payload = await response.json();
-    if (!response.ok || !payload.ok) {
-      throw new Error(payload.error || "Invalid admin login.");
-    }
-    window.location.href = payload.redirect || "/index.html";
-  } catch (error) {
-    if (status) {
-      status.textContent = error.message || "Could not sign in.";
-      status.classList.add("error");
-    }
-  }
-}
-
-async function handleAdminLogout() {
-  try {
-    await fetch("/api/admin-logout", { method: "POST" });
-  } finally {
-    window.location.href = "/admin.html";
-  }
 }
 
 function handleDetailClick(event) {
@@ -890,25 +1188,108 @@ function handleDetailClick(event) {
       renderDetail(candidate.candidate_id);
       return;
     }
+    const previousStage = candidate.stage;
     candidate.stage = nextStage;
+    candidate.stage_entered_at = new Date().toISOString();
+    logAudit("stage changed", candidate, `${previousStage} → ${nextStage}`);
     pendingStageMove = null;
   }
   if (action === "note") {
     const note = document.querySelector("#new-note")?.value.trim();
-    if (note) candidate.notes = [note, ...(candidate.notes || [])];
+    const founder = getActiveFounder();
+    if (note) candidate.notes = [{ author: founder.name, role: founder.role, text: note, created_at: new Date().toISOString() }, ...(candidate.notes || [])];
+    if (note) logAudit("founder note added", candidate, `${founder.name} · ${founder.role}`);
     pendingStageMove = null;
   }
-  if (["inbound-email", "outbound-email", "interview"].includes(action)) {
+  if (action === "download-resume") {
+    const blob = new Blob([candidate.resume_text || "Résumé text is not available."], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = candidate.resume_file_name || `${candidate.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-resume.txt`;
+    link.click();
+    URL.revokeObjectURL(url);
+    logAudit("résumé downloaded", candidate, "Sanitized browser-local file");
+  }
+  if (action === "save-assistance") {
+    candidate.assistant ||= { evidence: [], questions: [] };
+    candidate.assistant.summary = document.querySelector("#assistant-summary")?.value.trim() || candidate.assistant.summary;
+    logAudit("assistance edited", candidate, "Recruiter edited and saved deterministic assistance");
+  }
+  if (action === "submit-scorecard") {
+    const evidence = document.querySelector("#scorecard-evidence")?.value.trim();
+    const recommendation = document.querySelector("#scorecard-recommendation")?.value || "hold";
+    if (evidence) {
+      candidate.scorecards = [...(candidate.scorecards || []).filter((card) => card.interviewer !== "Demo interviewer"), { interviewer: "Demo interviewer", submitted: true, recommendation, responses: [{ competency: document.querySelector("#scorecard-competency")?.value || "Assigned competency", rating: Number(document.querySelector("#scorecard-rating")?.value || 3), evidence }] }];
+      logAudit("scorecard submitted", candidate, `${recommendation} recommendation with job-related evidence`);
+    }
+  }
+  if (action === "add-competency") {
+    const competency = document.querySelector("#new-competency")?.value.trim();
+    const question = document.querySelector("#new-question")?.value.trim();
+    const role = roles.find((item) => item.id === candidate.role_id);
+    if (competency && question) {
+      candidate.role_competencies = [...(candidate.role_competencies || role?.competencies || []), { id: `competency-${Date.now()}`, name: competency, question }];
+      logAudit("role competency added", candidate, competency);
+    }
+  }
+  if (["save-draft", "approve-message"].includes(action)) {
+    const body = document.querySelector("#message-draft")?.value.trim();
+    if (body) {
+      const approved = action === "approve-message";
+      candidate.communications = [{ event_id: `evt_${Date.now()}`, type: "email", direction: "outbound", status: approved ? "approved" : "draft", subject: document.querySelector("#message-template")?.selectedOptions?.[0]?.textContent || "Candidate update", body_preview: body, owner: candidate.owner || "Recruiting", event_at: new Date().toISOString() }, ...(candidate.communications || [])];
+      logAudit(approved ? "communication approved" : "draft saved", candidate, "No email sent; browser-local status only");
+    }
+  }
+  if (action === "create-handoff") {
+    candidate.onboarding = { owner: "People Operations", start_date: "2026-09-08", equipment: "Confirm laptop needs", documents: "Employment agreement and payroll forms", tasks: ["Confirm start date", "Order equipment", "Schedule orientation", "Assign first-week owner"] };
+    logAudit("onboarding handoff created", candidate, "Minimum-necessary start logistics only");
+  }
+  if (action === "export") logAudit("candidate export requested", candidate, "Prototype audit event; no file leaves the browser");
+  if (action === "delete-request") {
+    candidate.retention_status = "Deletion requested — admin review required";
+    logAudit("deletion requested", candidate, "Record retained pending authorized review");
+  }
+  if (action === "save-candidate") {
+    const email = document.querySelector("#edit-email")?.value.trim() || "";
+    if (email && !isValidEmail(email)) {
+      window.alert("Enter a valid fictional email address or leave it blank.");
+      return;
+    }
+    candidate.name = document.querySelector("#edit-name")?.value.trim() || candidate.name;
+    candidate.email = email;
+    candidate.current_title = document.querySelector("#edit-title")?.value.trim();
+    candidate.location = document.querySelector("#edit-location")?.value.trim();
+    candidate.total_years_experience = Number(document.querySelector("#edit-years")?.value || 0);
+    candidate.skills = buildCandidateSkills(document.querySelector("#edit-skills")?.value, document.querySelector("#edit-resume")?.value);
+    candidate.resume_text = document.querySelector("#edit-resume")?.value.trim();
+    logAudit("candidate edited", candidate, "Browser-local profile updated");
+  }
+  if (action === "archive") {
+    candidate.stage = "Archived";
+    candidate.stage_entered_at = new Date().toISOString();
+    logAudit("candidate archived", candidate, "Browser-local record moved to Archived");
+  }
+  if (action === "remove") {
+    if (!window.confirm(`Remove fictional candidate ${candidate.name} from this browser?`)) return;
+    saveCandidates(candidates.filter((item) => item.candidate_id !== candidate.candidate_id));
+    logAudit("candidate removed", candidate, "Browser-local record removed");
+    selectedCandidateId = null;
+    renderMetrics(); renderCandidates(); renderOperationsDashboard(); clearCandidateDetail("Candidate removed. Choose another profile or reset the demo.");
+    return;
+  }
+  if (["inbound-email", "outbound-email", "interview", "internal-update"].includes(action)) {
     const body = document.querySelector("#new-communication")?.value.trim();
     const subject = document.querySelector("#new-communication-subject")?.value.trim();
     if (body || subject) {
       const isInterview = action === "interview";
+      const isInternal = action === "internal-update";
       candidate.communications = [
         {
           event_id: `evt_${Date.now()}`,
-          type: isInterview ? "interview" : "email",
+          type: isInterview ? "interview" : isInternal ? "internal-update" : "email",
           direction: action === "inbound-email" ? "inbound" : action === "outbound-email" ? "outbound" : "internal",
-          subject: subject || (isInterview ? "Interview update" : "Candidate email"),
+          subject: subject || (isInterview ? "Interview update" : isInternal ? "Internal update" : "Candidate email"),
           body_preview: body || "No details added.",
           owner: "Recruiting",
           event_at: new Date().toISOString()
@@ -921,6 +1302,7 @@ function handleDetailClick(event) {
   candidate.updated_at = new Date().toISOString();
   saveCandidates(candidates);
   renderMetrics();
+  renderOperationsDashboard();
   refreshMetricDrilldown();
   renderDetail(candidate.candidate_id);
 }
@@ -1070,6 +1452,15 @@ function handleApplicationSubmit(event) {
   event.preventDefault();
   const form = event.currentTarget;
   const data = new FormData(form);
+  const status = document.querySelector("#application-status");
+  if (!String(data.get("name") || "").trim() || !String(data.get("email") || "").trim()) {
+    if (status) { status.textContent = "Add a fictional name and email address to continue."; status.classList.add("error"); }
+    return;
+  }
+  if (!isValidEmail(data.get("email"))) {
+    if (status) { status.textContent = "Enter a valid fictional email address, such as sample@example.com."; status.classList.add("error"); }
+    return;
+  }
   const desiredRole = String(data.get("role") || "").trim();
   const role = roles.find((item) => normalize(item.title) === normalize(desiredRole));
   const resumeText = data.get("resume") || "";
@@ -1077,7 +1468,7 @@ function handleApplicationSubmit(event) {
   const candidate = {
     candidate_id: `cand_${Date.now()}`,
     name: data.get("name"),
-    email: data.get("email"),
+    email: String(data.get("email")).trim(),
     phone: "",
     location: data.get("location"),
     current_title: data.get("current_role") || "Applicant",
@@ -1085,6 +1476,14 @@ function handleApplicationSubmit(event) {
     skills,
     industries: [],
     stage: "New",
+    role_id: role?.id || "",
+    owner: "Recruiting queue",
+    next_action: "Review application",
+    due_date: new Date(Date.now() + RESPONSE_TARGET_DAYS * 86400000).toISOString().slice(0, 10),
+    stage_entered_at: new Date().toISOString(),
+    source: "Careers site",
+    retention_status: "Demo retention policy pending",
+    browser_local: true,
     notes: [`Interested in ${role?.title || desiredRole || "an open role"}. Portfolio: ${data.get("portfolio") || "Not provided"}`],
     communications: [
       {
@@ -1105,8 +1504,88 @@ function handleApplicationSubmit(event) {
   candidates.unshift(candidate);
   saveCandidates(candidates);
   form.reset();
-  const status = document.querySelector("#application-status");
-  if (status) status.textContent = "Application received. Thank you.";
+  if (status) { status.textContent = "Success — your fictional application was added to this browser. Open the recruiter demo to review it."; status.classList.remove("error"); }
+}
+
+function loadSampleApplication() {
+  const form = document.querySelector("#application-form");
+  if (!form) return;
+  form.elements.name.value = "Rowan Ellis";
+  form.elements.email.value = "rowan.ellis@example.com";
+  form.elements.role.value = roles[1].title;
+  form.elements.current_role.value = "Software Engineering Student";
+  form.elements.location.value = "San Francisco, CA";
+  form.elements.portfolio.value = "https://example.com/rowan-portfolio";
+  form.elements.skills.value = "TypeScript, React, SQL, API integration";
+  form.elements.resume.value = "Software engineering student with 2 years of project experience. Built and tested full-stack projects with TypeScript, React, SQL, REST APIs, and collaborative code review.";
+  document.querySelector("#application-status").textContent = "Sample fictional application loaded. Review it, then submit.";
+  form.elements.name.focus();
+}
+
+function handleApplicationFile(event) {
+  const file = event.target.files?.[0];
+  const status = document.querySelector("#application-file-status");
+  const textarea = event.target.form?.elements.resume;
+  if (!file || !textarea) return;
+  if (!/\.(txt|md|markdown|csv)$/i.test(file.name) && !file.type.startsWith("text/")) {
+    status.textContent = "Unsupported file. Paste the text or choose TXT, Markdown, or CSV; nothing was uploaded.";
+    status.classList.add("error");
+    return;
+  }
+  const reader = new FileReader();
+  reader.addEventListener("load", () => {
+    textarea.value = String(reader.result || "");
+    status.textContent = `Loaded ${file.name} locally. The file was not uploaded.`;
+    status.classList.remove("error");
+  });
+  reader.addEventListener("error", () => { status.textContent = "This file could not be read. Try pasting its text instead."; status.classList.add("error"); });
+  reader.readAsText(file);
+}
+
+const LIMITATIONS_HTML = `<p>Everything shown—including people, roles, contact details, and companies—is fictional. Data is stored only in the current browser, and the demo must not be used with real applicant information.</p><p>This portfolio demonstration has no production authentication, shared storage, malware scanning, durable audit logs, retention or deletion enforcement, role-based access, email delivery, or legal/compliance approval.</p><p>Résumé files are never uploaded. Supported text files are read locally and only extracted text is used in browser-local candidate records.</p>`;
+
+function initLimitations() {
+  document.querySelectorAll("[data-limitations-content]").forEach((node) => { node.innerHTML = LIMITATIONS_HTML; });
+  document.querySelectorAll("[data-open-limitations]").forEach((button) => button.addEventListener("click", () => document.querySelector("#limitations-dialog")?.showModal()));
+  document.querySelectorAll("[data-close-limitations]").forEach((button) => button.addEventListener("click", () => button.closest("dialog")?.close()));
+}
+
+const tourSteps = [
+  ["Careers and intake", "Start on the fictional careers page, open a complete role, and submit the sample application."],
+  ["Candidate search", "Search and filter by stage, experience, or role. Every result is fictional or created in this browser."],
+  ["Explainable matching", "Open Priya Chen and choose the CFO role to see matched signals, missing signals, experience, and the exact formula."],
+  ["Profile context", "The profile keeps job-related evidence, ownership, next action, and résumé context together."],
+  ["Notes and history", "Add a note or log inbound, outbound, interview, and internal activity. Nothing sends email."],
+  ["Stage movement", "Move a candidate with a deliberate two-click confirmation."],
+  ["Reset", "Reset restores the original synthetic dataset. Presentation mode also loads a predictable scenario."]
+];
+let tourIndex = 0;
+function showTourStep(index) {
+  const dialog = document.querySelector("#tour-dialog");
+  if (!dialog) return;
+  tourIndex = Math.max(0, Math.min(tourSteps.length - 1, index));
+  document.querySelector("#tour-progress").textContent = `${tourIndex + 1}/${tourSteps.length}`;
+  document.querySelector("#tour-title").textContent = tourSteps[tourIndex][0];
+  document.querySelector("#tour-copy").textContent = tourSteps[tourIndex][1];
+  document.querySelector("[data-tour-prev]").disabled = tourIndex === 0;
+  document.querySelector("[data-tour-next]").textContent = tourIndex === tourSteps.length - 1 ? "Finish" : "Next";
+  if (!dialog.open) dialog.showModal();
+}
+
+function resetDemoState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(demoCandidates));
+  localStorage.removeItem(AUDIT_KEY);
+  selectedCandidateId = null; pendingStageMove = null; activeMetric = null;
+  renderMetrics(); renderCandidates(); renderOperationsDashboard();
+  clearCandidateDetail("Search or choose a candidate to view match evidence, notes, and pipeline actions.");
+}
+
+function enterPresentationMode() {
+  resetDemoState();
+  document.body.classList.add("presentation-mode");
+  selectDashboardRole("chief-financial-officer");
+  renderDetail("cand_101");
+  document.querySelector("#candidate-detail")?.scrollIntoView({ block: "start" });
 }
 
 function escapeHtml(value) {
@@ -1129,9 +1608,28 @@ function formatDate(value) {
 }
 
 function initAts() {
+  const founderSelect = document.querySelector("#active-founder");
+  if (founderSelect) {
+    founderSelect.innerHTML = founders.map((founder) => `<option value="${founder.id}">${escapeHtml(founder.name)} · ${escapeHtml(founder.role)}</option>`).join("");
+    founderSelect.value = getActiveFounder().id;
+    founderSelect.addEventListener("change", () => {
+      localStorage.setItem(ACTIVE_FOUNDER_KEY, founderSelect.value);
+      if (selectedCandidateId) renderDetail(selectedCandidateId);
+    });
+  }
   renderRoleFilter();
   renderMetrics();
   renderCandidates();
+  renderOperationsDashboard();
+  document.querySelector("#ops-dashboard")?.addEventListener("click", (event) => {
+    const viewButton = event.target.closest("[data-operations-view]");
+    if (viewButton) {
+      activeOperationsView = viewButton.dataset.operationsView;
+      renderOperationsDashboard();
+      return;
+    }
+    if (event.target.closest("[data-export-metrics]")) exportOperationsMetrics();
+  });
   document.querySelector("#candidate-form")?.addEventListener("submit", handleCandidateSubmit);
   document.querySelector("input[name='file']")?.addEventListener("change", handleResumeFile);
   document.querySelector("#candidate-list")?.addEventListener("click", (event) => {
@@ -1163,7 +1661,7 @@ function initAts() {
     event.preventDefault();
     renderMetricDrilldown(card.dataset.metric);
   });
-  ["#candidate-search", "#stage-filter", "#years-filter"].forEach((selector) => {
+  ["#candidate-search", "#stage-filter", "#years-filter", "#background-filter"].forEach((selector) => {
     document.querySelector(selector)?.addEventListener("input", renderCandidates);
   });
   document.querySelector("#role-filter")?.addEventListener("focus", (event) => {
@@ -1190,34 +1688,28 @@ function initAts() {
   });
   document.querySelector("#search-button")?.addEventListener("click", renderCandidates);
   document.querySelector("#reset-data")?.addEventListener("click", () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(demoCandidates));
-    selectedCandidateId = null;
-    renderMetrics();
-    renderMetricDrilldown(activeMetric);
-    renderCandidates();
-    const detail = document.querySelector("#candidate-detail");
-    const name = document.querySelector("#detail-name");
-    const status = document.querySelector("#detail-status");
-    if (name) name.textContent = "Select a candidate";
-    if (status) {
-      status.textContent = "";
-      status.hidden = true;
-    }
-    if (detail) {
-      detail.className = "detail-empty";
-      detail.textContent = "Search or choose a candidate to view match evidence, notes, and pipeline actions.";
-    }
+    if (window.confirm("Reset all browser-local changes and restore the original synthetic dataset?")) resetDemoState();
   });
-  document.querySelector("#admin-logout")?.addEventListener("click", handleAdminLogout);
-}
-
-function initAdminLogin() {
-  document.querySelector("#admin-login-form")?.addEventListener("submit", handleAdminLogin);
+  document.querySelector("#presentation-mode")?.addEventListener("click", enterPresentationMode);
+  document.querySelector("[data-start-tour]")?.addEventListener("click", () => showTourStep(0));
+  document.querySelector("[data-tour-skip]")?.addEventListener("click", () => document.querySelector("#tour-dialog")?.close());
+  document.querySelector("[data-tour-prev]")?.addEventListener("click", () => showTourStep(tourIndex - 1));
+  document.querySelector("[data-tour-next]")?.addEventListener("click", () => tourIndex === tourSteps.length - 1 ? document.querySelector("#tour-dialog")?.close() : showTourStep(tourIndex + 1));
+  document.querySelector("#show-audit")?.addEventListener("click", () => {
+    const dialog = document.querySelector("#audit-dialog");
+    const list = document.querySelector("#audit-list");
+    const events = JSON.parse(localStorage.getItem(AUDIT_KEY) || "[]");
+    if (list) list.innerHTML = `<ul class="timeline-list">${events.map((item) => `<li><span class="timeline-meta">${escapeHtml(item.action)} · ${formatDate(item.at)}</span><strong>${escapeHtml(item.candidate)}</strong><span>${escapeHtml(item.detail)} · ${escapeHtml(item.actor)}</span></li>`).join("") || "<li>No demo events yet. Open a candidate and take an action.</li>"}</ul>`;
+    dialog?.showModal();
+  });
+  document.querySelector("[data-close-audit]")?.addEventListener("click", () => document.querySelector("#audit-dialog")?.close());
 }
 
 function initCareers() {
   renderCareers();
   document.querySelector("#application-form")?.addEventListener("submit", handleApplicationSubmit);
+  document.querySelector("#load-sample-application")?.addEventListener("click", loadSampleApplication);
+  document.querySelector("input[name='application_file']")?.addEventListener("change", handleApplicationFile);
   document.querySelector("#application-role")?.addEventListener("focus", (event) => {
     renderRoleSuggestions(event.target.value);
   });
@@ -1263,4 +1755,4 @@ function initCareers() {
 
 if (document.body.dataset.page === "ats") initAts();
 if (document.body.dataset.page === "careers") initCareers();
-if (document.body.dataset.page === "admin-login") initAdminLogin();
+initLimitations();
